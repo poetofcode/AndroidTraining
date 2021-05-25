@@ -1,16 +1,36 @@
 package ru.poetofcode.rx_samples;
 
+import java.util.Arrays;
+import java.util.List;
+
 import io.reactivex.Observable;
+import io.reactivex.observables.ConnectableObservable;
 
 public class Launcher {
 
+    private static int currentSample = 1;
+
     public static void main(String[] args) {
 
-        // Observable<String> names = Observable.just("One", "Two", "Three");
+        sampleOne_Errors();
 
-        Observable<String> names =
+        sampleTwo_Creation();
 
-        Observable.create(emitter -> {
+        log("\nFINISH APP");
+    }
+
+    private static void log(String str) {
+        System.out.println(str);
+    }
+
+    private static void logSampleHeader() {
+        log("\n*********** #" + currentSample++ + " *************");
+    }
+
+    private static void sampleOne_Errors() {
+        logSampleHeader();
+
+        Observable<String> names = Observable.create(emitter -> {
             emitter.onNext("One");
             emitter.onNext("Two");
             emitter.onNext("Three");
@@ -28,8 +48,7 @@ public class Launcher {
             if (item instanceof String) {
                 return ((String) item).length();
             } else {
-                // return Observable.error(new Exception("Error in map"));
-                throw new Exception("kjkljlk");
+                throw new Exception("Error description");
             }
         });
 
@@ -40,27 +59,43 @@ public class Launcher {
         }, () -> {
             log("Completed !");
         });
-
-
-        /* Observable<Integer> lens = names.map(String::length); */
-
-//        names.blockingSubscribe(name -> {
-//            log("Name: " + name);
-//        }, e -> {
-//            log("Exception: " + e.toString());
-//        }, () -> {
-//            log("Completed!");
-//        });
-
-//        lens.blockingSubscribe(len -> {
-//            log("len: " + len);
-//        });
-
-        log("FINISH APP");
     }
 
-    private static void log(String str) {
-        System.out.println(str);
+    @SuppressWarnings("CheckResult")
+    private static void sampleTwo_Creation() {
+        logSampleHeader();
+
+        /*
+            Factory methods:
+
+            - create
+            - just
+            - fromIterable
+            - fromCallable (что это?)
+            - defer (что это?)
+            - range (??)
+            - interval
+            - ConnectableObservable
+         */
+
+        List<String> lines = Arrays.asList("One", "Two", "Three");
+
+        Observable.fromIterable(lines)
+                .subscribe(Launcher::log);
+
+        Observable.just("1", "2", "3")
+            .subscribe(Launcher::log);
+
+
+        Observable<String> helloWorld = Observable.fromIterable(
+                Arrays.asList("H", "e", "l", "l", "o", " ", "W", "o", "r", "l", "d")
+        );
+
+        ConnectableObservable<String> helloHot = helloWorld.publish();
+
+        helloHot.subscribe(System.out::print, e -> {}, () -> log(""));
+
+        helloHot.connect();
     }
 
 }
