@@ -9,15 +9,15 @@ import androidx.navigation.fragment.NavHostFragment
 
 class MainActivity : FragmentActivity() {
 
-    var navController: NavController? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_main)
-
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
-                    as NavHostFragment
-        navController = navHostFragment.navController
     }
+}
+
+fun MainActivity.getNavController() : NavController {
+    val navHostFragment =
+        supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+                as NavHostFragment
+    return navHostFragment.navController
 }
