@@ -54,7 +54,7 @@ class SplashFragment : Fragment() {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "Splash screen!", color = Color.White, style = typography.h6)
+                Text(text = "Splash screen!", color = Color.White, style = typography.h5)
             }
         }
     }
