@@ -40,7 +40,7 @@ class SplashFragment : Fragment() {
 
         Handler().postDelayed({
             (requireActivity() as MainActivity).getNavController().navigate(R.id.action_splash_to_onboard)
-        }, 2000)
+        }, 1000)
     }
 
     @Preview
