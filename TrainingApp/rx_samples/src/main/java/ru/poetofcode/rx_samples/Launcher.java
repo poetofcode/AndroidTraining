@@ -2,6 +2,7 @@ package ru.poetofcode.rx_samples;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -21,6 +22,8 @@ public class Launcher {
         sampleTwo_Creation();
 
         sampleThree_ProxyObservable();
+
+        sampleFour_DelayedObservable();
 
         log("\nFINISH APP");
     }
@@ -124,6 +127,24 @@ public class Launcher {
         });
 
         return res;
+    }
+
+    private static void sampleFour_DelayedObservable() {
+        logSampleHeader();
+
+        Observable<String> hello = Observable.just("H", "e", "l", "l", "o", "!");
+
+        hello.delay(1, TimeUnit.SECONDS)
+                .subscribe(Launcher::log);
+        sleep(6 * 1000);
+    }
+
+    private static void sleep(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }
