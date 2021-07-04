@@ -15,6 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material.MaterialTheme
+import androidx.compose.ui.Alignment
+
 
 class SplashFragment : Fragment() {
 
@@ -42,10 +47,17 @@ class SplashFragment : Fragment() {
     @Composable
     fun Splash() {
         Surface(
-            color = Color.Green
+            color = Color.Black
         ) {
-            Text(text = "Splash screen!", color = Color.White)
+            val typography = MaterialTheme.typography
+            Column (
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(text = "Splash screen!", color = Color.White, style = typography.h6)
+            }
         }
     }
+
 
 }
