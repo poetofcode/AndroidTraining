@@ -69,4 +69,7 @@ dependencies {
     // Accompanist:Pager
     implementation "com.google.accompanist:accompanist-pager:$versions.pager"
     implementation "com.google.accompanist:accompanist-pager-indicators:$versions.pager"
+
+    // Shimmer
+    implementation 'com.github.kazemihabib:compose-shimmer:1.0.1'
 }

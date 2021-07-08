@@ -59,7 +59,7 @@ class CatalogFragment : Fragment() {
                     Tab(
                         text = { Text(title) },
                         selected = pagerState.currentPage == index,
-                        onClick = { /* TODO */ },
+                        onClick = { /* TODO */ }
                     )
                 }
             }
