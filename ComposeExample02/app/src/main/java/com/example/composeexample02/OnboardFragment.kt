@@ -7,9 +7,7 @@ import android.view.ViewGroup
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.Fragment
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
 
 class OnboardFragment : Fragment() {
@@ -40,14 +39,41 @@ class OnboardFragment : Fragment() {
     @Preview(showBackground = true)
     @Composable
     fun Splash() {
-        val pagerState = rememberPagerState(pageCount = 3)
+        val pages = listOf("One", "Two", "Three", "Four", "Five", "Six", "Seven")
+        val pagerState = rememberPagerState(pageCount = pages.size)
 
-        HorizontalPager(
-            state = pagerState,
-            modifier = Modifier.fillMaxSize()
-        ) { page ->
-            val bgArr = listOf(Color.Blue, Color.Green, Color.Magenta)
-            Page(num = page, bgColor = bgArr[page])
+        Column {
+
+            ScrollableTabRow(
+                // Our selected tab is our current page
+                selectedTabIndex = pagerState.currentPage,
+                // Override the indicator, using the provided pagerTabIndicatorOffset modifier
+                indicator = { tabPositions ->
+                    TabRowDefaults.Indicator(
+                        Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
+                    )
+                }
+            ) {
+                // Add tabs for all of our pages
+                pages.forEachIndexed { index, title ->
+                    Tab(
+                        text = { Text(title) },
+                        selected = pagerState.currentPage == index,
+                        onClick = { /* TODO */ },
+                    )
+                }
+            }
+
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier.fillMaxSize()
+            ) { page ->
+                val bgArr = pages.mapIndexed { index, _ ->
+                    listOf(Color.Blue, Color.Green, Color.Magenta)[index % 3]
+                }
+                Page(num = page, bgColor = bgArr[page])
+            }
+
         }
     }
 

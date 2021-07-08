@@ -68,4 +68,5 @@ dependencies {
 
     // Accompanist:Pager
     implementation "com.google.accompanist:accompanist-pager:$versions.pager"
+    implementation "com.google.accompanist:accompanist-pager-indicators:$versions.pager"
 }
