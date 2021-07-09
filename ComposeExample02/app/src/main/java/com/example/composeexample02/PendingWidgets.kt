@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -47,12 +48,6 @@ class PendingWidgets : Fragment() {
     fun Root() {
         val isReady by model.isReady.observeAsState(false)
 
-//        if (isReady) {
-//            CatList()
-//        } else {
-//            LoadingScreen()
-//        }
-
         CatList(!isReady)
     }
 
@@ -60,13 +55,13 @@ class PendingWidgets : Fragment() {
     fun CatList(isLoading: Boolean = false) {
         LazyColumn {
             model.cats.forEach {
-                if (!isLoading) {
-                    item {
-                        CatRow(cat = it)
+                if (isLoading) {
+                    items(10) { idx ->
+                        PendingCatRow(cat = Cat("fgdghdhhhhghhgh", ""), isLoading = isLoading)
                     }
                 } else {
-                    items(10) {
-                        PlaceholderRow()
+                    item {
+                        PendingCatRow(cat = it, isLoading = isLoading)
                     }
                 }
             }
@@ -74,56 +69,21 @@ class PendingWidgets : Fragment() {
     }
 
     @Composable
-    fun PlaceholderRow() {
+    fun PendingCatRow(cat: Cat, isLoading: Boolean) {
         Row(
             modifier = Modifier.padding(10.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .size(60.dp)
-                    .padding(end = 20.dp)
-                    .clip(CircleShape)
-                    .background(Color.LightGray)
-            )
-            Box(
-                modifier = Modifier
-                    .width(100.dp)
-                    .height(20.dp)
-                    .align(Alignment.CenterVertically)
-                    .background(Color.LightGray),
-            )
-        }
-    }
-
-    @Composable
-    fun CatRow(cat: Cat) {
-        Row(
-            modifier = Modifier.padding(10.dp)
-        ) {
-            GlideImage(cat.imageUrl)
-            Text(
-                text = cat.text,
-                color = Color.Blue,
-                modifier = Modifier.align(Alignment.CenterVertically),
-                style = TextStyle(
-                    fontSize = 16.sp
-                )
-            )
-        }
-    }
-
-    /*
-    @Composable
-    fun PendingCatRow(cat: Cat) {
-        Row(
-            modifier = Modifier.padding(10.dp)
-        ) {
-            Pending { GlideImage(cat.imageUrl) }
-            Pending {
+            Pending(
+                modifier = Modifier.padding(10.dp).clip(CircleShape),
+                isLoading = isLoading
+            ) { GlideImage(cat.imageUrl) }
+            Pending(
+                isLoading = isLoading,
+                modifier = Modifier.align(Alignment.CenterVertically)
+            ) {
                 Text(
                     text = cat.text,
                     color = Color.Blue,
-                    modifier = Modifier.align(Alignment.CenterVertically),
                     style = TextStyle(
                         fontSize = 16.sp
                     )
@@ -133,10 +93,32 @@ class PendingWidgets : Fragment() {
     }
 
     @Composable
-    fun Pending(isLoading: Boolean = true) {
-
+    fun Pending(
+        modifier: Modifier = Modifier,
+        isLoading: Boolean = true,
+        content: @Composable () -> Unit
+    ) {
+        Box(modifier = modifier) {
+            if (!isLoading) {
+                content()
+            } else {
+                Box(
+                    modifier = Modifier
+                        .width(IntrinsicSize.Min)
+                        .height(IntrinsicSize.Min)
+                        // .padding(10.dp)
+                        .background(Color.LightGray),
+                ) {
+                    content()
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.LightGray),
+                    )
+                }
+            }
+        }
     }
-     */
 
     @Composable
     fun GlideImage(url: String) {
@@ -148,7 +130,6 @@ class PendingWidgets : Fragment() {
             contentDescription = "",
             modifier = Modifier
                 .size(60.dp)
-                .padding(end = 20.dp)
         )
     }
 
