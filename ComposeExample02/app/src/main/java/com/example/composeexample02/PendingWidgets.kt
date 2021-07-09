@@ -22,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -58,10 +57,13 @@ class PendingWidgets : Fragment() {
 
     @Composable
     fun CatList(isLoading: Boolean = false) {
-        PendingColumn(isLoading = isLoading) {
+        PendingColumn(isLoading = isLoading, placeholder = {
+            PendingCatRow(cat = Cat(text = "dfgfdgdfgfd", imageUrl = ""), isLoading = true)
+            // Text(text = "Loading...", modifier = Modifier.padding(10.dp))
+        }) {
             model.cats.forEach {
                 item {
-                    PendingCatRow(cat = it, isLoading = isLoading)
+                    PendingCatRow(it)
                 }
             }
         }
@@ -78,6 +80,7 @@ class PendingWidgets : Fragment() {
         horizontalAlignment: Alignment.Horizontal = Alignment.Start,
         flingBehavior: FlingBehavior = ScrollableDefaults.flingBehavior(),
         isLoading: Boolean = true,
+        placeholder: (@Composable (Int) -> Unit)? = null,
         content: LazyListScope.() -> Unit
     ) = LazyColumn(
         modifier,
@@ -89,8 +92,8 @@ class PendingWidgets : Fragment() {
         flingBehavior
     ) {
         if (isLoading) {
-            items(10) {
-                PendingCatRow(cat = Cat("fgdghdhhhhghhgh", ""), isLoading = isLoading)
+            items(100) {
+                placeholder?.invoke(it)
             }
         } else {
             content()
@@ -98,7 +101,7 @@ class PendingWidgets : Fragment() {
     }
 
     @Composable
-    fun PendingCatRow(cat: Cat, isLoading: Boolean) {
+    fun PendingCatRow(cat: Cat, isLoading: Boolean = false) {
         Row(
             modifier = Modifier.padding(10.dp)
         ) {
