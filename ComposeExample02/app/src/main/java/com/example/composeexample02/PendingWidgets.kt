@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.MutatePriority
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.gestures.ScrollableDefaults
@@ -18,6 +19,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,6 +32,9 @@ import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.accompanist.glide.rememberGlidePainter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.launch
 
 class PendingWidgets : Fragment() {
 
@@ -82,21 +87,27 @@ class PendingWidgets : Fragment() {
         isLoading: Boolean = true,
         placeholder: (@Composable (Int) -> Unit)? = null,
         content: LazyListScope.() -> Unit
-    ) = LazyColumn(
-        modifier,
-        state,
-        contentPadding,
-        reverseLayout,
-        verticalArrangement,
-        horizontalAlignment,
-        flingBehavior
     ) {
-        if (isLoading) {
-            items(100) {
-                placeholder?.invoke(it)
+        val scope = rememberCoroutineScope()
+
+        LazyColumn(
+            modifier,
+            state,
+            contentPadding,
+            reverseLayout,
+            verticalArrangement,
+            horizontalAlignment,
+            flingBehavior
+        ) {
+            if (isLoading) {
+                state.disableScrolling(scope)
+                items(100) {
+                    placeholder?.invoke(it)
+                }
+            } else {
+                state.reenableScrolling(scope)
+                content()
             }
-        } else {
-            content()
         }
     }
 
@@ -179,5 +190,23 @@ class PendingWidgets : Fragment() {
             Text(text = "Загрузка...")
         }
     }
+
+    private fun LazyListState.disableScrolling(scope: CoroutineScope) {
+        scope.launch {
+            scroll(scrollPriority = MutatePriority.PreventUserInput) {
+                // Await indefinitely, blocking scrolls
+                awaitCancellation()
+            }
+        }
+    }
+
+    private fun LazyListState.reenableScrolling(scope: CoroutineScope) {
+        scope.launch {
+            scroll(scrollPriority = MutatePriority.PreventUserInput) {
+                // Do nothing, just cancel the previous indefinite "scroll"
+            }
+        }
+    }
+
 
 }
