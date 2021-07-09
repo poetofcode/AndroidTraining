@@ -6,8 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.FlingBehavior
+import androidx.compose.foundation.gestures.ScrollableDefaults
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -53,18 +58,42 @@ class PendingWidgets : Fragment() {
 
     @Composable
     fun CatList(isLoading: Boolean = false) {
-        LazyColumn {
+        PendingColumn(isLoading = isLoading) {
             model.cats.forEach {
-                if (isLoading) {
-                    items(10) { idx ->
-                        PendingCatRow(cat = Cat("fgdghdhhhhghhgh", ""), isLoading = isLoading)
-                    }
-                } else {
-                    item {
-                        PendingCatRow(cat = it, isLoading = isLoading)
-                    }
+                item {
+                    PendingCatRow(cat = it, isLoading = isLoading)
                 }
             }
+        }
+    }
+
+    @Composable
+    fun PendingColumn(
+        modifier: Modifier = Modifier,
+        state: LazyListState = rememberLazyListState(),
+        contentPadding: PaddingValues = PaddingValues(0.dp),
+        reverseLayout: Boolean = false,
+        verticalArrangement: Arrangement.Vertical =
+            if (!reverseLayout) Arrangement.Top else Arrangement.Bottom,
+        horizontalAlignment: Alignment.Horizontal = Alignment.Start,
+        flingBehavior: FlingBehavior = ScrollableDefaults.flingBehavior(),
+        isLoading: Boolean = true,
+        content: LazyListScope.() -> Unit
+    ) = LazyColumn(
+        modifier,
+        state,
+        contentPadding,
+        reverseLayout,
+        verticalArrangement,
+        horizontalAlignment,
+        flingBehavior
+    ) {
+        if (isLoading) {
+            items(10) {
+                PendingCatRow(cat = Cat("fgdghdhhhhghhgh", ""), isLoading = isLoading)
+            }
+        } else {
+            content()
         }
     }
 
@@ -74,7 +103,9 @@ class PendingWidgets : Fragment() {
             modifier = Modifier.padding(10.dp)
         ) {
             Pending(
-                modifier = Modifier.padding(10.dp).clip(CircleShape),
+                modifier = Modifier
+                    .padding(10.dp)
+                    .clip(CircleShape),
                 isLoading = isLoading
             ) { GlideImage(cat.imageUrl) }
             Pending(
