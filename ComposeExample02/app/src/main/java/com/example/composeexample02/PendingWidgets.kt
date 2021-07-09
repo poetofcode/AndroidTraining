@@ -60,12 +60,13 @@ class PendingWidgets : Fragment() {
         CatList(!isReady)
     }
 
+    private val ph: (@Composable (Int) -> Unit) = {
+        PendingCatRow(cat = Cat(text = "dfgfdgdfgfd", imageUrl = ""), isLoading = true)
+    }
+
     @Composable
     fun CatList(isLoading: Boolean = false) {
-        PendingColumn(isLoading = isLoading, placeholder = {
-            PendingCatRow(cat = Cat(text = "dfgfdgdfgfd", imageUrl = ""), isLoading = true)
-            // Text(text = "Loading...", modifier = Modifier.padding(10.dp))
-        }) {
+        PendingColumn(isLoading = isLoading, placeholder = ph) {
             model.cats.forEach {
                 item {
                     PendingCatRow(it)
