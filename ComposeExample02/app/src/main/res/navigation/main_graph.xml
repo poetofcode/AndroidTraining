@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_graph"
-    app:startDestination="@id/catalogFragment">
+    app:startDestination="@id/pendingWidgets">
 
     <fragment
         android:id="@+id/splashFragment"
@@ -28,5 +28,9 @@
         android:id="@+id/shimmerFragment"
         android:name="com.example.composeexample02.ShimmerFragment"
         android:label="Shimmer" />
+    <fragment
+        android:id="@+id/pendingWidgets"
+        android:name="com.example.composeexample02.PendingWidgets"
+        android:label="PendingWidgets" />
 
 </navigation>

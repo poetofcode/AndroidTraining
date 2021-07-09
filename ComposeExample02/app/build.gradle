@@ -72,4 +72,7 @@ dependencies {
 
     // Shimmer
     implementation 'com.github.kazemihabib:compose-shimmer:1.0.1'
+
+    // Glide
+    implementation "com.google.accompanist:accompanist-glide:$versions.pager"
 }
