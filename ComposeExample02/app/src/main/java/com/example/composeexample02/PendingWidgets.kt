@@ -5,14 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.TextStyle
@@ -39,45 +42,101 @@ class PendingWidgets : Fragment() {
         }
     }
 
-    data class Item(
-        val text: String,
-        val imageUrl: String
-    )
-
     @Preview(showSystemUi = true)
     @Composable
     fun Root() {
         val isReady by model.isReady.observeAsState(false)
 
-        if (isReady) {
-            CatList()
-        } else {
-            LoadingScreen()
-        }
+//        if (isReady) {
+//            CatList()
+//        } else {
+//            LoadingScreen()
+//        }
+
+        CatList(!isReady)
     }
 
     @Composable
-    fun CatList() {
+    fun CatList(isLoading: Boolean = false) {
         LazyColumn {
             model.cats.forEach {
-                item {
-                    Row(
-                        modifier = Modifier.padding(10.dp)
-                    ) {
-                        GlideImage(it.imageUrl)
-                        Text(
-                            text = it.text,
-                            color = Color.Blue,
-                            modifier = Modifier.align(Alignment.CenterVertically),
-                            style = TextStyle(
-                                fontSize = 16.sp
-                            )
-                        )
+                if (!isLoading) {
+                    item {
+                        CatRow(cat = it)
+                    }
+                } else {
+                    items(10) {
+                        PlaceholderRow()
                     }
                 }
             }
         }
     }
+
+    @Composable
+    fun PlaceholderRow() {
+        Row(
+            modifier = Modifier.padding(10.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(60.dp)
+                    .padding(end = 20.dp)
+                    .clip(CircleShape)
+                    .background(Color.LightGray)
+            )
+            Box(
+                modifier = Modifier
+                    .width(100.dp)
+                    .height(20.dp)
+                    .align(Alignment.CenterVertically)
+                    .background(Color.LightGray),
+            )
+        }
+    }
+
+    @Composable
+    fun CatRow(cat: Cat) {
+        Row(
+            modifier = Modifier.padding(10.dp)
+        ) {
+            GlideImage(cat.imageUrl)
+            Text(
+                text = cat.text,
+                color = Color.Blue,
+                modifier = Modifier.align(Alignment.CenterVertically),
+                style = TextStyle(
+                    fontSize = 16.sp
+                )
+            )
+        }
+    }
+
+    /*
+    @Composable
+    fun PendingCatRow(cat: Cat) {
+        Row(
+            modifier = Modifier.padding(10.dp)
+        ) {
+            Pending { GlideImage(cat.imageUrl) }
+            Pending {
+                Text(
+                    text = cat.text,
+                    color = Color.Blue,
+                    modifier = Modifier.align(Alignment.CenterVertically),
+                    style = TextStyle(
+                        fontSize = 16.sp
+                    )
+                )
+            }
+        }
+    }
+
+    @Composable
+    fun Pending(isLoading: Boolean = true) {
+
+    }
+     */
 
     @Composable
     fun GlideImage(url: String) {
