@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.MutatePriority
 import androidx.compose.foundation.background
@@ -14,7 +15,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,7 +22,10 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.composed
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.TextStyle
@@ -117,24 +120,40 @@ class PendingWidgets : Fragment() {
         Row(
             modifier = Modifier.padding(10.dp)
         ) {
-            Pending(
+            //
+            // Cat Avatar
+            //
+            Image(
+                painter = rememberGlidePainter(
+                    request = cat.imageUrl,
+                    // previewPlaceholder = R.drawable.placeholder
+                ),
+                contentDescription = "",
                 modifier = Modifier
-                    .padding(10.dp)
-                    .clip(CircleShape),
-                isLoading = isLoading
-            ) { GlideImage(cat.imageUrl) }
-            Pending(
-                isLoading = isLoading,
-                modifier = Modifier.align(Alignment.CenterVertically)
-            ) {
-                Text(
-                    text = cat.text,
-                    color = Color.Blue,
-                    style = TextStyle(
-                        fontSize = 16.sp
+                    .size(60.dp)
+                    .placeholder(
+                        cornerRadius = CornerRadius(100f, 100f),
+                        enabled = isLoading,
+                        effect = null
                     )
-                )
-            }
+            )
+            Spacer(Modifier.width(10.dp))
+            //
+            // Cat Name
+            //
+            Text(
+                text = cat.text,
+                color = Color.Blue,
+                style = TextStyle(
+                    fontSize = 16.sp
+                ),
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .placeholder(
+                        enabled = isLoading,
+                        effect = null
+                    )
+            )
         }
     }
 
@@ -164,19 +183,6 @@ class PendingWidgets : Fragment() {
                 }
             }
         }
-    }
-
-    @Composable
-    fun GlideImage(url: String) {
-        Image(
-            painter = rememberGlidePainter(
-                request = url,
-                // previewPlaceholder = R.drawable.placeholder
-            ),
-            contentDescription = "",
-            modifier = Modifier
-                .size(60.dp)
-        )
     }
 
     @Preview
@@ -211,3 +217,34 @@ class PendingWidgets : Fragment() {
 
 
 }
+
+
+private fun Modifier.placeholder(
+    enabled: Boolean = true,
+    color: Color = Color.LightGray,
+    cornerRadius: CornerRadius = CornerRadius.Zero,
+    effect: Any? = null
+): Modifier = composed(
+    factory = {
+        val alphaAnim = rememberInfiniteTransition()
+        val alpha by alphaAnim.animateFloat(
+            initialValue = 0.3f,
+            targetValue = 1.0f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(500, easing = LinearEasing),
+                repeatMode = RepeatMode.Reverse
+            )
+        )
+
+        if (!enabled) return@composed this@placeholder
+        this.then(
+            Modifier.drawWithContent {
+                drawRoundRect(
+                    brush = Brush.linearGradient(listOf(color, color)),
+                    alpha = alpha,
+                    cornerRadius = cornerRadius
+                )
+            }
+        )
+    }
+)
