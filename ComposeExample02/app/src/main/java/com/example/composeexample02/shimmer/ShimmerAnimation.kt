@@ -12,7 +12,7 @@ interface ShimmerAnimation<T : Number> {
 }
 
 //
-// Default
+// Default implementations
 //
 
 class DefaultShimmerAnimation : ShimmerAnimation<Float> {

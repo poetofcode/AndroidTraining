@@ -31,6 +31,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.fragment.app.Fragment
+import com.example.composeexample02.shimmer.shimmer
+import com.example.composeexample02.skeleton.Skeleton
+import com.example.composeexample02.skeleton.preview
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.awaitCancellation
@@ -53,23 +56,6 @@ class CatalogFragment : Fragment() {
         }
     }
 
-    fun LazyListState.disableScrolling(scope: CoroutineScope) {
-        scope.launch {
-            scroll(scrollPriority = MutatePriority.PreventUserInput) {
-                // Await indefinitely, blocking scrolls
-                awaitCancellation()
-            }
-        }
-    }
-
-    fun LazyListState.reenableScrolling(scope: CoroutineScope) {
-        scope.launch {
-            scroll(scrollPriority = MutatePriority.PreventUserInput) {
-                // Do nothing, just cancel the previous indefinite "scroll"
-            }
-        }
-    }
-
     @ExperimentalPagerApi
     @Preview(showBackground = true)
     @Composable
@@ -77,60 +63,32 @@ class CatalogFragment : Fragment() {
         val pages = listOf("One", "Two", "Three", "Four", "Five", "Six", "Seven")
         val pagerState = rememberPagerState(pageCount = pages.size)
 
-        val state = rememberLazyListState()
-        val scope = rememberCoroutineScope()
-        state.disableScrolling(scope)
+        Column {
 
-        Column(
-            modifier = Modifier.clickable(enabled = false, onClick = {})
-        ) {
-
-            ScrollableTabRow(
-                // Our selected tab is our current page
+            Skeleton.ScrollableTabRow(
+                modifier = Modifier.shimmer(),
+                backgroundColor = Color.Transparent,
                 selectedTabIndex = pagerState.currentPage,
-                // Override the indicator, using the provided pagerTabIndicatorOffset modifier
                 indicator = { tabPositions ->
-                    Indicator(
-                        Modifier.myPagerTabIndicatorOffset(pagerState, tabPositions)
+                    TabRowDefaults.Indicator(
+                        Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
                     )
                 },
-                modifier = Modifier
-                    .pointerInput(Unit) {
-//                        detectDragGestures { change, dragAmount ->
-//                            // change.consumeAllChanges()
-//                        }
-                        detectTapGestures(
-                            onPress = {/* Called when the gesture starts */ },
-                            onDoubleTap = { /* Called on Double Tap */ },
-                            onLongPress = { /* Called on Long Press */ },
-                            onTap = { /* Called on Tap */ }
-                        )
-                    }
+                preview = {
+                    TabView(text = "fghfghfjf", isLoading = true)
+                    it < 3
+                },
+                isLoading = true
             ) {
                 // Add tabs for all of our pages
-                pages.forEachIndexed { index, title ->
-//                    Tab(
-//                        text = { Text(title) },
-//                        selected = pagerState.currentPage == index,
-//                        onClick = { /* TODO */ }
-//                    )
-
-                    Box(modifier = Modifier.padding(10.dp)) {
-                        Box(
-                            modifier = Modifier
-                                .width(60.dp)
-                                .height(16.dp)
-                                .background(Color.LightGray)
-                                .clip(RoundedCornerShape(6.dp))
-                        )
-                    }
+                pages.forEach { title ->
+                    TabView(text = title)
                 }
             }
 
             HorizontalPager(
                 state = pagerState,
-                modifier = Modifier.fillMaxSize(),
-                dragEnabled = false
+                modifier = Modifier.fillMaxSize()
             ) { page ->
                 val bgArr = pages.mapIndexed { index, _ ->
                     listOf(Color.Blue, Color.Green, Color.Magenta)[index % 3]
@@ -140,6 +98,21 @@ class CatalogFragment : Fragment() {
 
         }
     }
+
+    @Composable
+    private fun TabView(text: String, selected: Boolean = false, isLoading: Boolean = false) {
+        Tab(
+            text = {
+                Text(
+                    modifier = Modifier.preview(isLoading),
+                    text = text
+                )
+            },
+            selected = selected,
+            onClick = { /* TODO */ },
+        )
+    }
+
 
     @Composable
     fun Indicator(

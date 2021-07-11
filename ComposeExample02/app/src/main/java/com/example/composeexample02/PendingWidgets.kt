@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.MutatePriority
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.gestures.ScrollableDefaults
@@ -17,7 +16,6 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
@@ -101,7 +98,7 @@ class PendingWidgets : Fragment() {
         val scope = rememberCoroutineScope()
 
         LazyColumn(
-            modifier.shimmer(isLoading),
+            modifier.shimmerTest(isLoading),
             state,
             contentPadding,
             reverseLayout,
@@ -232,7 +229,7 @@ val ShimmerColorShades = listOf(
 )
 
 
-private fun Modifier.shimmer(
+fun Modifier.shimmerTest(
     enabled: Boolean = true,
 ): Modifier = composed(
     factory = {
