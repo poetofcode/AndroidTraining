@@ -8,6 +8,7 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.MutatePriority
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.gestures.ScrollableDefaults
 import androidx.compose.foundation.layout.*
@@ -15,7 +16,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -25,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.TextStyle
@@ -60,7 +63,9 @@ class PendingWidgets : Fragment() {
     fun Root() {
         val isReady by model.isReady.observeAsState(false)
 
-        CatList(!isReady)
+        MaterialTheme {
+            CatList(!isReady)
+        }
     }
 
     private val ph: (@Composable (Int) -> Unit) = {
@@ -117,44 +122,51 @@ class PendingWidgets : Fragment() {
 
     @Composable
     fun PendingCatRow(cat: Cat, isLoading: Boolean = false) {
-        Row(
-            modifier = Modifier.padding(10.dp)
-                .placeholder()
+        Surface(
+            modifier = Modifier.clickable(
+                onClick = { /* Ignoring onClick */ }
+            )
         ) {
-            //
-            // Cat Avatar
-            //
-            Image(
-                painter = rememberGlidePainter(
-                    request = cat.imageUrl,
-                    // previewPlaceholder = R.drawable.placeholder
-                ),
-                contentDescription = "",
+            Row(
                 modifier = Modifier
-                    .size(60.dp)
+                    .padding(10.dp)
+                    .placeholder()
+            ) {
+                //
+                // Cat Avatar
+                //
+                Image(
+                    painter = rememberGlidePainter(
+                        request = cat.imageUrl,
+                        // previewPlaceholder = R.drawable.placeholder
+                    ),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(60.dp)
 //                    .placeholder(
 //                        cornerRadius = CornerRadius(100f, 100f),
 //                        enabled = isLoading,
 //                        effect = null
 //                    )
-            )
-            Spacer(Modifier.width(10.dp))
-            //
-            // Cat Name
-            //
-            Text(
-                text = cat.text,
-                color = Color.Blue,
-                style = TextStyle(
-                    fontSize = 16.sp
-                ),
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
+                )
+                Spacer(Modifier.width(10.dp))
+                //
+                // Cat Name
+                //
+                Text(
+                    text = cat.text,
+                    color = Color.Blue,
+                    style = TextStyle(
+                        fontSize = 16.sp
+                    ),
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
 //                    .placeholder(
 //                        enabled = isLoading,
 //                        effect = null
 //                    )
-            )
+                )
+            }
         }
     }
 
