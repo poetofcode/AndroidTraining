@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.MutatePriority
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.gestures.ScrollableDefaults
@@ -19,7 +18,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -28,7 +26,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.TextStyle
@@ -123,14 +123,16 @@ class PendingWidgets : Fragment() {
     @Composable
     fun PendingCatRow(cat: Cat, isLoading: Boolean = false) {
         Surface(
-            modifier = Modifier.clickable(
-                onClick = { /* Ignoring onClick */ }
-            )
+            modifier = Modifier
+                .clickable(
+                    onClick = { /* Ignoring onClick */ }
+                )
+                .fillMaxWidth()
         ) {
             Row(
                 modifier = Modifier
+                    .shimmer(isLoading)
                     .padding(10.dp)
-                    .placeholder()
             ) {
                 //
                 // Cat Avatar
@@ -143,11 +145,7 @@ class PendingWidgets : Fragment() {
                     contentDescription = "",
                     modifier = Modifier
                         .size(60.dp)
-//                    .placeholder(
-//                        cornerRadius = CornerRadius(100f, 100f),
-//                        enabled = isLoading,
-//                        effect = null
-//                    )
+                        .placeholder(isLoading)
                 )
                 Spacer(Modifier.width(10.dp))
                 //
@@ -161,39 +159,8 @@ class PendingWidgets : Fragment() {
                     ),
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
-//                    .placeholder(
-//                        enabled = isLoading,
-//                        effect = null
-//                    )
+                        .placeholder(isLoading)
                 )
-            }
-        }
-    }
-
-    @Composable
-    fun Pending(
-        modifier: Modifier = Modifier,
-        isLoading: Boolean = true,
-        content: @Composable () -> Unit
-    ) {
-        Box(modifier = modifier) {
-            if (!isLoading) {
-                content()
-            } else {
-                Box(
-                    modifier = Modifier
-                        .width(IntrinsicSize.Min)
-                        .height(IntrinsicSize.Min)
-                        // .padding(10.dp)
-                        .background(Color.LightGray),
-                ) {
-                    content()
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(Color.LightGray),
-                    )
-                }
             }
         }
     }
@@ -234,9 +201,8 @@ class PendingWidgets : Fragment() {
 
 private fun Modifier.placeholder(
     enabled: Boolean = true,
-    color: Color = Color.LightGray,
-    cornerRadius: CornerRadius = CornerRadius.Zero,
-    effect: Any? = null
+    color: Color = Color(0xFFEEEEEE),
+    cornerRadius: CornerRadius = CornerRadius.Zero
 ): Modifier = composed(
     factory = {
         val alphaAnim = rememberInfiniteTransition()
@@ -249,27 +215,53 @@ private fun Modifier.placeholder(
             )
         )
 
-        // if (!enabled) return@composed this@placeholder
+        if (!enabled) return@composed this@placeholder
+
+        this.then(
+            Modifier
+                .drawWithContent {
+                    drawRoundRect(
+                        brush = SolidColor(color),
+                        cornerRadius = cornerRadius,
+                    )
+                }
+        )
+    }
+)
+
+
+private fun Modifier.shimmer(
+    enabled: Boolean = true,
+): Modifier = composed(
+    factory = {
+        val offsetXAnim = rememberInfiniteTransition()
+        val offsetX by offsetXAnim.animateFloat(
+            initialValue = 0f,
+            targetValue = 500f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(500, easing = LinearEasing),
+                repeatMode = RepeatMode.Reverse
+            )
+        )
+
+        if (!enabled) return@composed this
+
         this.then(
             Modifier
                 .graphicsLayer(alpha = 0.99f)
                 .drawWithContent {
-//                    drawRoundRect(
-//                        brush = Brush.linearGradient(listOf(color, color)),
-//                        cornerRadius = cornerRadius,
-//                        // blendMode = BlendMode.Multiply
-//                    )
-
                     drawContent()
 
                     drawRoundRect(
                         //
                         // color = Color.Green,
-                        brush = Brush.linearGradient(listOf(Color.Green, Color.Red)),
+                        brush = Brush.linearGradient(
+                            listOf(Color.LightGray, Color.Transparent),
+                            start = Offset(offsetX, 0f)
+                        ),
                         // radius = 100f,
-                        blendMode = BlendMode.SrcIn
+                        blendMode = BlendMode.SrcAtop
                     )
-
                 }
         )
     }
