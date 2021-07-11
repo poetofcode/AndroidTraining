@@ -74,14 +74,11 @@ class CatalogFragment : Fragment() {
                 }
             }
 
-            HorizontalPager(
+            Skeleton.HorizontalPager(
                 state = pagerState,
                 modifier = Modifier.fillMaxSize()
-            ) { page ->
-                val bgArr = model.tabNames.mapIndexed { index, _ ->
-                    listOf(Color.Blue, Color.Green, Color.Magenta)[index % 3]
-                }
-                Page(num = page, bgColor = bgArr[page])
+            ) { pageIndex ->
+                PageView(pageIndex = pageIndex, bgColor = Color.Transparent)
             }
 
         }
@@ -150,7 +147,7 @@ class CatalogFragment : Fragment() {
     }
 
     @Composable
-    fun Page(num: Int, bgColor: Color) {
+    fun PageView(pageIndex: Int, bgColor: Color) {
         val typography = MaterialTheme.typography
         Surface(
             color = bgColor,
@@ -160,7 +157,7 @@ class CatalogFragment : Fragment() {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "Page $num", color = Color.White, style = typography.h6)
+                Text(text = "Page $pageIndex", color = Color.White, style = typography.h6)
             }
         }
     }

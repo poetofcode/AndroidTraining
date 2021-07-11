@@ -22,11 +22,16 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.PagerDefaults
+import com.google.accompanist.pager.PagerScope
+import com.google.accompanist.pager.PagerState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.lazy.LazyColumn as _LazyColumn
 import androidx.compose.material.ScrollableTabRow as _ScrollableTabRow
+import com.google.accompanist.pager.HorizontalPager as _HorizontalPager
 
 typealias PreviewFactory = (@Composable (Int) -> Boolean)
 
@@ -108,6 +113,39 @@ class Skeleton {
                     }
                 } else {
                     tabs()
+                }
+            }
+        }
+
+        @ExperimentalPagerApi
+        @Composable
+        fun HorizontalPager(
+            state: PagerState,
+            modifier: Modifier = Modifier,
+            reverseLayout: Boolean = false,
+            itemSpacing: Dp = 0.dp,
+            dragEnabled: Boolean = true,
+            flingBehavior: FlingBehavior = PagerDefaults.defaultPagerFlingConfig(state),
+            verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+            horizontalAlignment: Alignment.Horizontal = Alignment.CenterHorizontally,
+            isLoading: Boolean = true,
+            preview: PreviewFactory? = null,
+            content: @Composable PagerScope.(page: Int) -> Unit
+        ) {
+            _HorizontalPager(
+                state,
+                modifier,
+                reverseLayout,
+                itemSpacing,
+                dragEnabled,
+                flingBehavior,
+                verticalAlignment,
+                horizontalAlignment
+            ) {  pageIndex ->
+                if (isLoading) {
+                    preview?.invoke(pageIndex)
+                } else {
+                    content(pageIndex)
                 }
             }
         }

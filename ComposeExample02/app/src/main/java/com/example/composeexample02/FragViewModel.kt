@@ -14,19 +14,19 @@ data class Cat(
 
 class FragViewModel : ViewModel() {
 
-//    val selected = MutableLiveData<Item>()
-//
-//    fun select(item: Item) {
-//        selected.value = item
-//    }
-
     private val _isReady: MutableLiveData<Boolean> = MutableLiveData(false)
     val isReady: LiveData<Boolean> = _isReady
+
+    private val _isContentReady: MutableLiveData<Boolean> = MutableLiveData(false)
+    val isContentReady: LiveData<Boolean> = _isContentReady
 
     init {
         viewModelScope.launch {
             delay(3000L)
             _isReady.postValue(true)
+
+            delay(5000L)
+            _isContentReady.postValue(true)
         }
     }
 
@@ -54,6 +54,7 @@ class FragViewModel : ViewModel() {
     )
 
     val tabNames = listOf("Одежда", "Обувь", "Футболки", "Бейсболки", "Мужское", "Женское", "Детское")
+
 
 
 }
