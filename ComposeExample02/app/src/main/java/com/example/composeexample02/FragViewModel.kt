@@ -25,7 +25,7 @@ class FragViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
-            delay(5000L)
+            delay(3000L)
             _isReady.postValue(true)
         }
     }
@@ -52,6 +52,8 @@ class FragViewModel : ViewModel() {
             "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
         )
     )
+
+    val tabNames = listOf("Одежда", "Обувь", "Футболки", "Бейсболки", "Мужское", "Женское", "Детское")
 
 
 }
