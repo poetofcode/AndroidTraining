@@ -17,8 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.awaitCancellation
@@ -27,6 +26,7 @@ import androidx.compose.foundation.lazy.LazyColumn as _LazyColumn
 
 class Skeleton {
     companion object {
+        private const val MAX_PREVIEW_ITEM_COUNT = 100
 
         @Composable
         fun LazyColumn(
@@ -54,7 +54,7 @@ class Skeleton {
             ) {
                 if (isLoading) {
                     state.disableScrolling(scope)
-                    items(100) {
+                    items(MAX_PREVIEW_ITEM_COUNT) {
                         placeholder?.invoke(it)
                     }
                 } else {
@@ -89,7 +89,7 @@ class Skeleton {
 //
 
 @SuppressLint("UnnecessaryComposedModifier")
-private fun Modifier.preview(
+fun Modifier.preview(
     enabled: Boolean = true,
     color: Color = Color(0xFFEEEEEE),
     cornerRadius: CornerRadius = CornerRadius.Zero
@@ -107,4 +107,3 @@ private fun Modifier.preview(
         )
     }
 )
-
