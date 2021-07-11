@@ -5,9 +5,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
-interface ShimmerAnimation<T: Number> {
+interface ShimmerAnimation<T : Number> {
     val colors: List<Color>
-    val animationSpec: InfiniteRepeatableSpec<T>
+    fun animationSpec(from: T, to: T): InfiniteRepeatableSpec<T>
     fun brush(offset: Float): Brush
 }
 
@@ -24,8 +24,8 @@ class DefaultShimmerAnimation : ShimmerAnimation<Float> {
             Color.LightGray.copy(0.9f)
         )
 
-    override val animationSpec: InfiniteRepeatableSpec<Float>
-        get() = infiniteRepeatable(
+    override fun animationSpec(from: Float, to: Float): InfiniteRepeatableSpec<Float> =
+        infiniteRepeatable(
             animation = tween(800, easing = LinearEasing),
             repeatMode = RepeatMode.Restart
         )

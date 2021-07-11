@@ -8,6 +8,7 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalConfiguration
 
 @SuppressLint("UnnecessaryComposedModifier")
 fun Modifier.shimmer(
@@ -15,11 +16,15 @@ fun Modifier.shimmer(
     animation: ShimmerAnimation<Float> = DefaultShimmerAnimation()
 ): Modifier = composed(
     factory = {
+        val density = LocalConfiguration.current.densityDpi
+        val widthDp = LocalConfiguration.current.screenWidthDp
+        val width = (widthDp / density).toFloat()
+
         val offsetXAnim = rememberInfiniteTransition()
         val offsetX by offsetXAnim.animateFloat(
             initialValue = 0f,
-            targetValue = 2000f,
-            animationSpec = animation.animationSpec
+            targetValue = width,
+            animationSpec = animation.animationSpec(0f, width)
         )
         if (!enabled) return@composed this
         this.then(
