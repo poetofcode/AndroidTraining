@@ -137,7 +137,7 @@ class Skeleton {
                 modifier,
                 reverseLayout,
                 itemSpacing,
-                dragEnabled,
+                !isLoading,
                 flingBehavior,
                 verticalAlignment,
                 horizontalAlignment

@@ -76,9 +76,14 @@ class CatalogFragment : Fragment() {
 
             Skeleton.HorizontalPager(
                 state = pagerState,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                preview = {
+                    PageView(0, bgColor = Color.Transparent, isLoading = !isReady)
+                    true
+                },
+                isLoading = !isReady
             ) { pageIndex ->
-                PageView(pageIndex = pageIndex, bgColor = Color.Transparent)
+                PageView(pageIndex = pageIndex, bgColor = Color.Blue)
             }
 
         }
@@ -147,7 +152,7 @@ class CatalogFragment : Fragment() {
     }
 
     @Composable
-    fun PageView(pageIndex: Int, bgColor: Color) {
+    fun PageView(pageIndex: Int, bgColor: Color, isLoading: Boolean = false) {
         val typography = MaterialTheme.typography
         Surface(
             color = bgColor,
