@@ -25,8 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -119,6 +119,7 @@ class PendingWidgets : Fragment() {
     fun PendingCatRow(cat: Cat, isLoading: Boolean = false) {
         Row(
             modifier = Modifier.padding(10.dp)
+                .placeholder()
         ) {
             //
             // Cat Avatar
@@ -131,11 +132,11 @@ class PendingWidgets : Fragment() {
                 contentDescription = "",
                 modifier = Modifier
                     .size(60.dp)
-                    .placeholder(
-                        cornerRadius = CornerRadius(100f, 100f),
-                        enabled = isLoading,
-                        effect = null
-                    )
+//                    .placeholder(
+//                        cornerRadius = CornerRadius(100f, 100f),
+//                        enabled = isLoading,
+//                        effect = null
+//                    )
             )
             Spacer(Modifier.width(10.dp))
             //
@@ -149,10 +150,10 @@ class PendingWidgets : Fragment() {
                 ),
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
-                    .placeholder(
-                        enabled = isLoading,
-                        effect = null
-                    )
+//                    .placeholder(
+//                        enabled = isLoading,
+//                        effect = null
+//                    )
             )
         }
     }
@@ -236,15 +237,28 @@ private fun Modifier.placeholder(
             )
         )
 
-        if (!enabled) return@composed this@placeholder
+        // if (!enabled) return@composed this@placeholder
         this.then(
-            Modifier.drawWithContent {
-                drawRoundRect(
-                    brush = Brush.linearGradient(listOf(color, color)),
-                    alpha = alpha,
-                    cornerRadius = cornerRadius
-                )
-            }
+            Modifier
+                .graphicsLayer(alpha = 0.99f)
+                .drawWithContent {
+//                    drawRoundRect(
+//                        brush = Brush.linearGradient(listOf(color, color)),
+//                        cornerRadius = cornerRadius,
+//                        // blendMode = BlendMode.Multiply
+//                    )
+
+                    drawContent()
+
+                    drawRoundRect(
+                        //
+                        // color = Color.Green,
+                        brush = Brush.linearGradient(listOf(Color.Green, Color.Red)),
+                        // radius = 100f,
+                        blendMode = BlendMode.SrcIn
+                    )
+
+                }
         )
     }
 )
