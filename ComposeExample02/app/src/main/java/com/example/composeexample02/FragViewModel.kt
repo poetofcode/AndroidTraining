@@ -25,7 +25,7 @@ class FragViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
-            delay(2000L)
+            delay(5000L)
             _isReady.postValue(true)
         }
     }

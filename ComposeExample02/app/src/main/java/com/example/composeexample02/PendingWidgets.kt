@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.MutatePriority
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.gestures.ScrollableDefaults
@@ -100,7 +101,7 @@ class PendingWidgets : Fragment() {
         val scope = rememberCoroutineScope()
 
         LazyColumn(
-            modifier,
+            modifier.shimmer(isLoading),
             state,
             contentPadding,
             reverseLayout,
@@ -122,46 +123,41 @@ class PendingWidgets : Fragment() {
 
     @Composable
     fun PendingCatRow(cat: Cat, isLoading: Boolean = false) {
-        Surface(
+        Row(
             modifier = Modifier
+                .padding(horizontal = 20.dp, vertical = 10.dp)
+                .fillMaxWidth()
                 .clickable(
                     onClick = { /* Ignoring onClick */ }
                 )
-                .fillMaxWidth()
         ) {
-            Row(
+            //
+            // Cat Avatar
+            //
+            Image(
+                painter = rememberGlidePainter(
+                    request = cat.imageUrl,
+                    // previewPlaceholder = R.drawable.placeholder
+                ),
+                contentDescription = "",
                 modifier = Modifier
-                    .shimmer(isLoading)
-                    .padding(10.dp)
-            ) {
-                //
-                // Cat Avatar
-                //
-                Image(
-                    painter = rememberGlidePainter(
-                        request = cat.imageUrl,
-                        // previewPlaceholder = R.drawable.placeholder
-                    ),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(60.dp)
-                        .placeholder(isLoading)
-                )
-                Spacer(Modifier.width(10.dp))
-                //
-                // Cat Name
-                //
-                Text(
-                    text = cat.text,
-                    color = Color.Blue,
-                    style = TextStyle(
-                        fontSize = 16.sp
-                    ),
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .placeholder(isLoading)
-                )
-            }
+                    .size(60.dp)
+                    .placeholder(isLoading)
+            )
+            Spacer(Modifier.width(10.dp))
+            //
+            // Cat Name
+            //
+            Text(
+                text = cat.text,
+                color = Color.Blue,
+                style = TextStyle(
+                    fontSize = 16.sp
+                ),
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .placeholder(isLoading)
+            )
         }
     }
 
@@ -229,6 +225,12 @@ private fun Modifier.placeholder(
     }
 )
 
+val ShimmerColorShades = listOf(
+    Color.LightGray.copy(0.9f),
+    Color.LightGray.copy(0.2f),
+    Color.LightGray.copy(0.9f)
+)
+
 
 private fun Modifier.shimmer(
     enabled: Boolean = true,
@@ -237,10 +239,10 @@ private fun Modifier.shimmer(
         val offsetXAnim = rememberInfiniteTransition()
         val offsetX by offsetXAnim.animateFloat(
             initialValue = 0f,
-            targetValue = 500f,
+            targetValue = 2000f,
             animationSpec = infiniteRepeatable(
-                animation = tween(500, easing = LinearEasing),
-                repeatMode = RepeatMode.Reverse
+                animation = tween(800, easing = LinearEasing),
+                repeatMode = RepeatMode.Restart
             )
         )
 
@@ -251,15 +253,12 @@ private fun Modifier.shimmer(
                 .graphicsLayer(alpha = 0.99f)
                 .drawWithContent {
                     drawContent()
-
                     drawRoundRect(
-                        //
-                        // color = Color.Green,
                         brush = Brush.linearGradient(
-                            listOf(Color.LightGray, Color.Transparent),
-                            start = Offset(offsetX, 0f)
+                            ShimmerColorShades,
+                            start = Offset(10f, 00f),
+                            end = Offset(offsetX + 10f, offsetX)
                         ),
-                        // radius = 100f,
                         blendMode = BlendMode.SrcAtop
                     )
                 }
