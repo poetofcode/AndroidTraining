@@ -25,7 +25,7 @@ class FragViewModel : ViewModel() {
             delay(3000L)
             _isReady.postValue(true)
 
-            delay(5000L)
+            delay(2000L)
             _isContentReady.postValue(true)
         }
     }
