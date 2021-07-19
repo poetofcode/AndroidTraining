@@ -1,20 +1,21 @@
 package com.example.composeexample02.skeleton
 
 import android.annotation.SuppressLint
-import android.content.ClipData
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.MutatePriority
 import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.gestures.ScrollableDefaults
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -78,6 +79,7 @@ class Skeleton {
             }
         }
 
+        @ExperimentalMaterialApi
         @Composable
         fun TabLazyColumn(
             modifier: Modifier = Modifier,
@@ -92,22 +94,42 @@ class Skeleton {
             preview: PreviewFactory? = null,
             tabs: List<String> = emptyList(),
             selected: Int = 0,
-            onSelect: (Int) -> Unit,
+            onSelect: (Int) -> Unit = {},
+            tabView: @Composable RowScope.(title: String, isSelected: Boolean) -> Unit = { _, _ -> },
             content: LazyListScope.() -> Unit
-        ) = LazyColumn(
-            modifier,
-            state,
-            contentPadding,
-            reverseLayout,
-            verticalArrangement,
-            horizontalAlignment,
-            flingBehavior,
-            isLoading,
-            preview
+        ) {
+            val selectedState = rememberSaveable { mutableStateOf(selected) }
+
+            LazyColumn(
+                modifier,
+                state,
+                contentPadding,
+                reverseLayout,
+                verticalArrangement,
+                horizontalAlignment,
+                flingBehavior,
+                isLoading,
+                preview
             ) {
-
-
-
+                // Tabs
+                item {
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        tabs.forEachIndexed { idx, title ->
+                            Surface(
+                                modifier = Modifier.weight(1f / tabs.size),
+                                onClick = {
+                                    selectedState.value = idx
+                                    onSelect(idx)
+                                }
+                            ) {
+                                tabView(title, idx == selectedState.value)
+                            }
+                        }
+                    }
+                }
+                // Content items
+                content()
+            }
         }
 
         @Composable
