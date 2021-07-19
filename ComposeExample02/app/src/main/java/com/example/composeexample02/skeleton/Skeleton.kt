@@ -98,7 +98,10 @@ class Skeleton {
             tabView: @Composable RowScope.(title: String, isSelected: Boolean) -> Unit = { _, _ -> },
             content: LazyListScope.() -> Unit
         ) {
-            val selectedState = rememberSaveable { mutableStateOf(selected) }
+            val selectedState = rememberSaveable {
+                onSelect(selected)
+                mutableStateOf(selected)
+            }
 
             LazyColumn(
                 modifier,

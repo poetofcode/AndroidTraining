@@ -1,5 +1,6 @@
 package com.example.composeexample02.model
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +12,9 @@ class TabColumnModel : ViewModel() {
     private val _currentUnits: MutableLiveData<List<String>> = MutableLiveData(emptyList())
     val currentUnits: LiveData<List<String>> = _currentUnits
 
-    private val _selected: MutableLiveData<Int> = MutableLiveData(0)
-    val selected: LiveData<Int> = _selected
+    fun onSelect(idx: Int) {
+        Log.d("ComposeApp", "$idx SELECTED")
+        _currentUnits.postValue((0..10).map { "${tabs[idx]} $it" })
+    }
 
 }

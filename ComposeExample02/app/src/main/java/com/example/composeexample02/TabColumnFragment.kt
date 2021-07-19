@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -49,13 +51,14 @@ class TabColumnFragment : Fragment() {
     @ExperimentalMaterialApi
     @Composable
     fun Root(model: TabColumnModel?) {
+        val listState = model?.currentUnits?.observeAsState(emptyList())
 
         Skeleton.TabLazyColumn(
             modifier = Modifier.padding(8.dp),
             isLoading = false,
-            tabs = model?.tabs ?: listOf("Test 1", "Test 2"),
+            tabs = model?.tabs ?: listOf("Tab 1", "Tab 2"),
             selected = 0,
-            onSelect = { /*TODO*/ },
+            onSelect = { model?.onSelect(it) },
             tabView = { title, isSelected ->
                 Column(
                     modifier = Modifier
@@ -76,8 +79,11 @@ class TabColumnFragment : Fragment() {
                 }
             }
         ) {
-
-
+            listState?.value?.forEach {
+                item {
+                    Text(it)
+                }
+            }
         }
     }
 
