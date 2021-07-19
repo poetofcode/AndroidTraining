@@ -1,6 +1,7 @@
 package com.example.composeexample02.skeleton
 
 import android.annotation.SuppressLint
+import android.content.ClipData
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.MutatePriority
 import androidx.compose.foundation.gestures.FlingBehavior
@@ -78,6 +79,38 @@ class Skeleton {
         }
 
         @Composable
+        fun TabLazyColumn(
+            modifier: Modifier = Modifier,
+            state: LazyListState = rememberLazyListState(),
+            contentPadding: PaddingValues = PaddingValues(0.dp),
+            reverseLayout: Boolean = false,
+            verticalArrangement: Arrangement.Vertical =
+                if (!reverseLayout) Arrangement.Top else Arrangement.Bottom,
+            horizontalAlignment: Alignment.Horizontal = Alignment.Start,
+            flingBehavior: FlingBehavior = ScrollableDefaults.flingBehavior(),
+            isLoading: Boolean = true,
+            preview: PreviewFactory? = null,
+            tabs: List<String> = emptyList(),
+            selected: Int = 0,
+            onSelect: (Int) -> Unit,
+            content: LazyListScope.() -> Unit
+        ) = LazyColumn(
+            modifier,
+            state,
+            contentPadding,
+            reverseLayout,
+            verticalArrangement,
+            horizontalAlignment,
+            flingBehavior,
+            isLoading,
+            preview
+            ) {
+
+
+
+        }
+
+        @Composable
         fun ScrollableTabRow(
             selectedTabIndex: Int,
             modifier: Modifier = Modifier,
@@ -141,7 +174,7 @@ class Skeleton {
                 flingBehavior,
                 verticalAlignment,
                 horizontalAlignment
-            ) {  pageIndex ->
+            ) { pageIndex ->
                 if (isLoading) {
                     preview?.invoke(pageIndex)
                 } else {

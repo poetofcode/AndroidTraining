@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_graph"
-    app:startDestination="@id/catalogFragment">
+    app:startDestination="@id/tabColumnFragment">
 
     <fragment
         android:id="@+id/splashFragment"
@@ -32,5 +32,9 @@
         android:id="@+id/pendingWidgets"
         android:name="com.example.composeexample02.PendingWidgets"
         android:label="PendingWidgets" />
+    <fragment
+        android:id="@+id/tabColumnFragment"
+        android:name="com.example.composeexample02.TabColumnFragment"
+        android:label="TabColumnFragment" />
 
 </navigation>

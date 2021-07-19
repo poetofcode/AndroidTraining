@@ -35,6 +35,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.example.composeexample02.model.Cat
+import com.example.composeexample02.model.FragViewModel
 import com.google.accompanist.glide.rememberGlidePainter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.awaitCancellation

@@ -1,4 +1,4 @@
-package com.example.composeexample02
+package com.example.composeexample02.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

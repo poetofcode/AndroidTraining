@@ -10,6 +10,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -25,6 +27,8 @@ import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.example.composeexample02.model.Cat
+import com.example.composeexample02.model.FragViewModel
 import com.example.composeexample02.shimmer.shimmer
 import com.example.composeexample02.skeleton.Skeleton
 import com.example.composeexample02.skeleton.preview
@@ -35,6 +39,7 @@ import kotlin.math.max
 
 class CatalogFragment : Fragment() {
     private val model: FragViewModel by activityViewModels()
+    private val localModel = compositionLocalOf<FragViewModel> { error("No model found!") }
 
     @ExperimentalPagerApi
     override fun onCreateView(
@@ -44,7 +49,9 @@ class CatalogFragment : Fragment() {
     ): View? {
         return ComposeView(requireContext()).apply {
             setContent {
-                CatalogRoot()
+                CompositionLocalProvider(localModel provides model) {
+                    CatalogRoot()
+                }
             }
         }
     }
@@ -52,9 +59,17 @@ class CatalogFragment : Fragment() {
     @ExperimentalPagerApi
     @Preview(showBackground = true)
     @Composable
+    fun DefaultPreview() {
+        CompositionLocalProvider(localModel provides FragViewModel()) {
+            CatalogRoot()
+        }
+    }
+
+    @ExperimentalPagerApi
+    @Composable
     fun CatalogRoot() {
-        val isReady by model.isReady.observeAsState(false)
-        val pagerState = rememberPagerState(pageCount = model.tabNames.size)
+        val isReady by localModel.current.isReady.observeAsState(false)
+        val pagerState = rememberPagerState(pageCount = localModel.current.tabNames.size)
 
         Column {
 
@@ -74,7 +89,7 @@ class CatalogFragment : Fragment() {
                 isLoading = !isReady
             ) {
                 // Add tabs for all of our pages
-                model.tabNames.forEach { title ->
+                localModel.current.tabNames.forEach { title ->
                     TabView(text = title)
                 }
             }
@@ -159,7 +174,8 @@ class CatalogFragment : Fragment() {
     @Composable
     fun PageView(pageIndex: Int, bgColor: Color, isLoading: Boolean = false) {
         val typography = MaterialTheme.typography
-        val isContentReady by model.isContentReady.observeAsState(false)
+        val isContentReady by localModel.current.isContentReady.observeAsState(false)
+        val cats = localModel.current.cats
 
         Surface(
             color = bgColor,
@@ -173,7 +189,7 @@ class CatalogFragment : Fragment() {
                     true
                 }
             ) {
-                model.cats.forEach {
+                cats.forEach {
                     item {
                         CatRow(it)
                     }
