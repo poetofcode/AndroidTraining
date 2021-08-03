@@ -8,3 +8,4 @@
 //}
 rootProject.name = "Compose Example 02"
 include ':app'
+include ':kotlin_app'
