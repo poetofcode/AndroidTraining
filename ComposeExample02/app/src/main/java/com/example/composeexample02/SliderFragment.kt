@@ -63,8 +63,6 @@ class SliderFragment : Fragment() {
     fun ZoomableImage(imageUrl: String?, maxScale: Float = 4f, minScale: Float = 0.7f) {
         var scale = remember { mutableStateOf(1f) }
         var bitmap = remember { mutableStateOf<Bitmap?>(null) }
-        var translation = remember { mutableStateOf(Offset(0f, 0f)) }
-
         var offsetX = remember { mutableStateOf(0f) }
         var offsetY = remember { mutableStateOf(0f) }
 
@@ -124,8 +122,8 @@ class SliderFragment : Fragment() {
                         .graphicsLayer(
                             scaleX = scale.value,
                             scaleY = scale.value,
-                            translationX = translation.value.x,
-                            translationY = translation.value.y
+                            translationX = offsetX.value,
+                            translationY = offsetY.value
                         ),
                     bitmap = loadedBitmap.asImageBitmap(), // loadedBitmap.asImageBitmap()
                     contentDescription = ""
