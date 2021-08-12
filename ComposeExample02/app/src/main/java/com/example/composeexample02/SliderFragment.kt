@@ -57,7 +57,10 @@ class SliderFragment : Fragment() {
     @Composable
     fun Root() {
         val images = FakeData.IMAGES
-        val pagerState = rememberPagerState(pageCount = images.size)
+        val pagerState = rememberPagerState(
+            pageCount = images.size,
+            infiniteLoop = true
+        )
 
         Box {
             HorizontalPager(
@@ -132,8 +135,8 @@ class SliderFragment : Fragment() {
                         .graphicsLayer(
                             scaleX = scale.value,
                             scaleY = scale.value,
-                            translationX = offsetX.value,
-                            translationY = offsetY.value
+//                            translationX = offsetX.value,
+//                            translationY = offsetY.value
                         ),
                     bitmap = loadedBitmap.asImageBitmap(), // loadedBitmap.asImageBitmap()
                     contentDescription = ""
