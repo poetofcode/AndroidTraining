@@ -34,6 +34,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.example.composeexample02.entity.FakeData
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
 
 class SliderFragment : Fragment() {
 
@@ -50,12 +52,20 @@ class SliderFragment : Fragment() {
         }
     }
 
+    @ExperimentalPagerApi
     @Preview
     @Composable
     fun Root() {
-        // Text(text = "Slider Fragment")
+        val images = FakeData.IMAGES
+        val pagerState = rememberPagerState(pageCount = images.size)
+
         Box {
-            ZoomableImage(imageUrl = FakeData.IMAGES[0])
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier.fillMaxSize()
+            ) { pageIdx ->
+                ZoomableImage(imageUrl = images[pageIdx])
+            }
         }
     }
 
