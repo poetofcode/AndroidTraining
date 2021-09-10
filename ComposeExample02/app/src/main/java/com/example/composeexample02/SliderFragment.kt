@@ -136,7 +136,7 @@ class SliderFragment : Fragment() {
                             scaleX = scale.value,
                             scaleY = scale.value,
 //                            translationX = offsetX.value,
-//                            translationY = offsetY.value
+                            translationY = offsetY.value
                         ),
                     bitmap = loadedBitmap.asImageBitmap(), // loadedBitmap.asImageBitmap()
                     contentDescription = ""
