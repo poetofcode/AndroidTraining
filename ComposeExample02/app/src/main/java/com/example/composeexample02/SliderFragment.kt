@@ -8,29 +8,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.MutatePriority
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.*
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.calculatePan
+import androidx.compose.foundation.gestures.calculateZoom
+import androidx.compose.foundation.gestures.forEachGesture
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.ScaleFactor
-import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -42,13 +40,12 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
-import com.google.android.material.animation.AnimationUtils.lerp
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.awaitCancellation
-import kotlinx.coroutines.isActive
+import java.lang.Math.abs
 import kotlin.math.absoluteValue
 
 class SliderFragment : Fragment() {
+
+    val spacingState: MutableState<Float> = mutableStateOf(0f)
 
     @ExperimentalPagerApi
     override fun onCreateView(
@@ -76,58 +73,47 @@ class SliderFragment : Fragment() {
 
         // val isDragEnabled = remember { mutableStateOf(false) }
 
-        Box {
+        println("mylog spacing: ${spacingState.value}")
+
+        Box(Modifier.background(Color.Black)) {
             HorizontalPager(
                 state = pagerState,
                 modifier = Modifier.fillMaxSize(),
                 dragEnabled = true,
-                itemSpacing = 20.dp,
+                // itemSpacing = spacingState.value.dp
             ) { pageIdx ->
 
-//
-//                Card(
-//                    Modifier
-//                        .graphicsLayer {
-//                            // Calculate the absolute offset for the current page from the
-//                            // scroll position. We use the absolute value which allows us to mirror
-//                            // any effects for both directions
-//                            val pageOffset = calculateCurrentOffsetForPage(pageIdx).absoluteValue
-//
-//                            // We animate the scaleX + scaleY, between 85% and 100%
-//                            lerp(
-//                                0.85f,
-//                                1f,
-//                                1f - pageOffset.coerceIn(0f, 1f)
-//                            ).also { scale ->
-//                                scaleX = scale
-//                                scaleY = scale
-//                            }
-//
-//                            // We animate the alpha, between 50% and 100%
-//                            alpha = lerp(
-//                                0.5f,
-//                                1f,
-//                                1f - pageOffset.coerceIn(0f, 1f)
-//                            )
-//                        }
-//                ) {
-//                    // Card content
-//                    ZoomableImage(imageUrl = images[pageIdx])
-//                }
+                val pageOffset = calculateCurrentOffsetForPage(pageIdx).absoluteValue
 
-
-                    ZoomableImage(imageUrl = images[pageIdx], isActive = pagerState.currentPage == pageIdx)
+                ZoomableImage(
+                    imageUrl = images[pageIdx],
+                    isActive = pagerState.currentPage == pageIdx
+                )
 
             }
         }
     }
 
     @Composable
-    fun ZoomableImage(imageUrl: String?, maxScale: Float = 4f, minScale: Float = 0.7f, isActive: Boolean) {
+    fun ZoomableImage(
+        imageUrl: String?,
+        maxScale: Float = 4f,
+        minScale: Float = 0.7f,
+        isActive: Boolean
+    ) {
         var scale = remember { mutableStateOf(1f) }
         var bitmap = remember { mutableStateOf<Bitmap?>(null) }
         var offsetX = remember { mutableStateOf(0f) }
         var offsetY = remember { mutableStateOf(0f) }
+
+        // spacingState.value = kotlin.math.abs(offsetX.value)
+
+        val screenWidth = with(LocalDensity.current) { LocalConfiguration.current.screenWidthDp.dp.toPx() }
+        val calcOffset = (screenWidth * scale.value - screenWidth).run {
+            if (this < 0) 0f else this
+        }
+
+        // println("mylog offset: $calcOffset, screenWidth (dp): $screenWidth")
 
 
 //        fun calculateNewScale(k: Float): Float =
@@ -135,6 +121,8 @@ class SliderFragment : Fragment() {
 //                scale.value * k
 //            else
 //                scale.value
+
+        spacingState.value =  with(LocalDensity.current) { calcOffset.toDp() }.value / 2
 
         Glide.with(LocalContext.current).asBitmap()
             .load(imageUrl)
@@ -172,7 +160,7 @@ class SliderFragment : Fragment() {
                                 scale.value *= event.calculateZoom()
                                 val offset = event.calculatePan()
                                 offsetX.value += offset.x
-                                offsetY.value += offset.y
+                                offsetY.value += if (scale.value <= 1f) 0f else offset.y
                             } while (event.changes.any { it.pressed })
 
                             println("mylog DRAG CANCEL")
