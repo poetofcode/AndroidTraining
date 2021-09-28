@@ -73,14 +73,18 @@ class SliderFragment : Fragment() {
 
         // val isDragEnabled = remember { mutableStateOf(false) }
 
-        println("mylog spacing: ${spacingState.value}")
+
+        val current = pagerState.currentPage
+        val target = pagerState.targetPage ?: current
+
+        println("mylog spacing: ${spacingState.value}, curr: $current, target: $target")
 
         Box(Modifier.background(Color.Black)) {
             HorizontalPager(
                 state = pagerState,
                 modifier = Modifier.fillMaxSize(),
                 dragEnabled = true,
-                // itemSpacing = spacingState.value.dp
+                itemSpacing = spacingState.value.dp
             ) { pageIdx ->
 
                 val pageOffset = calculateCurrentOffsetForPage(pageIdx).absoluteValue
