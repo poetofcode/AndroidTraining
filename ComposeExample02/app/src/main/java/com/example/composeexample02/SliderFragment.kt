@@ -1,5 +1,6 @@
 package com.example.composeexample02
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -25,17 +27,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ScaleFactor
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.example.composeexample02.entity.FakeData
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
+import com.google.android.material.animation.AnimationUtils.lerp
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.isActive
+import kotlin.math.absoluteValue
 
 class SliderFragment : Fragment() {
 
@@ -52,6 +63,7 @@ class SliderFragment : Fragment() {
         }
     }
 
+    @SuppressLint("RestrictedApi")
     @ExperimentalPagerApi
     @Preview
     @Composable
@@ -62,28 +74,67 @@ class SliderFragment : Fragment() {
             infiniteLoop = true
         )
 
+        // val isDragEnabled = remember { mutableStateOf(false) }
+
         Box {
             HorizontalPager(
                 state = pagerState,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                dragEnabled = true,
+                itemSpacing = 20.dp,
             ) { pageIdx ->
-                ZoomableImage(imageUrl = images[pageIdx])
+
+//
+//                Card(
+//                    Modifier
+//                        .graphicsLayer {
+//                            // Calculate the absolute offset for the current page from the
+//                            // scroll position. We use the absolute value which allows us to mirror
+//                            // any effects for both directions
+//                            val pageOffset = calculateCurrentOffsetForPage(pageIdx).absoluteValue
+//
+//                            // We animate the scaleX + scaleY, between 85% and 100%
+//                            lerp(
+//                                0.85f,
+//                                1f,
+//                                1f - pageOffset.coerceIn(0f, 1f)
+//                            ).also { scale ->
+//                                scaleX = scale
+//                                scaleY = scale
+//                            }
+//
+//                            // We animate the alpha, between 50% and 100%
+//                            alpha = lerp(
+//                                0.5f,
+//                                1f,
+//                                1f - pageOffset.coerceIn(0f, 1f)
+//                            )
+//                        }
+//                ) {
+//                    // Card content
+//                    ZoomableImage(imageUrl = images[pageIdx])
+//                }
+
+
+                    ZoomableImage(imageUrl = images[pageIdx], isActive = pagerState.currentPage == pageIdx)
+
             }
         }
     }
 
     @Composable
-    fun ZoomableImage(imageUrl: String?, maxScale: Float = 4f, minScale: Float = 0.7f) {
+    fun ZoomableImage(imageUrl: String?, maxScale: Float = 4f, minScale: Float = 0.7f, isActive: Boolean) {
         var scale = remember { mutableStateOf(1f) }
         var bitmap = remember { mutableStateOf<Bitmap?>(null) }
         var offsetX = remember { mutableStateOf(0f) }
         var offsetY = remember { mutableStateOf(0f) }
 
-        fun calculateNewScale(k: Float): Float =
-            if ((scale.value <= maxScale && k > 1f) || (scale.value >= minScale && k < 1f))
-                scale.value * k
-            else
-                scale.value
+
+//        fun calculateNewScale(k: Float): Float =
+//            if ((scale.value <= maxScale && k > 1f) || (scale.value >= minScale && k < 1f))
+//                scale.value * k
+//            else
+//                scale.value
 
         Glide.with(LocalContext.current).asBitmap()
             .load(imageUrl)
@@ -101,11 +152,21 @@ class SliderFragment : Fragment() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
+                .zIndex(if (isActive) 10f else 1f)
                 .background(Color.Black)
                 .pointerInput(Unit) {
+//                    detectDragGestures { change, dragAmount ->
+//                        // val offset = event.calculatePan()
+//                        offsetX.value += dragAmount.x
+//                        offsetY.value += dragAmount.y
+//                    }
+
                     forEachGesture {
                         awaitPointerEventScope {
                             awaitFirstDown()
+
+                            println("mylog DRAG START")
+
                             do {
                                 val event = awaitPointerEvent()
                                 scale.value *= event.calculateZoom()
@@ -113,25 +174,21 @@ class SliderFragment : Fragment() {
                                 offsetX.value += offset.x
                                 offsetY.value += offset.y
                             } while (event.changes.any { it.pressed })
+
+                            println("mylog DRAG CANCEL")
+
+                            scale.value = 1f
+                            offsetX.value = 0f
+                            offsetY.value = 0f
                         }
                     }
                 }
         ) {
             bitmap.value?.let { loadedBitmap ->
+
                 Image(
                     modifier = Modifier
                         .fillMaxSize()
-//                        .zoomable(onZoomDelta = {
-//                            scale = calculateNewScale(it)
-//                        })
-//                        .rawDragGestureFilter(
-//                            object : DragObserver {
-//                                override fun onDrag(dragDistance: Offset): Offset {
-//                                    translation = translation.plus(dragDistance)
-//                                    return super.onDrag(dragDistance)
-//                                }
-//                            })
-
                         .graphicsLayer(
                             scaleX = scale.value,
                             scaleY = scale.value,
@@ -139,7 +196,7 @@ class SliderFragment : Fragment() {
                             translationY = offsetY.value
                         ),
                     bitmap = loadedBitmap.asImageBitmap(), // loadedBitmap.asImageBitmap()
-                    contentDescription = ""
+                    contentDescription = null
 
                 )
             } ?: kotlin.run {
