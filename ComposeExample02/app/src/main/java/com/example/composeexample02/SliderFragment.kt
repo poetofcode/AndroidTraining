@@ -67,8 +67,8 @@ class SliderFragment : Fragment() {
     fun Root() {
         val images = FakeData.IMAGES
         val pagerState = rememberPagerState(
-            pageCount = images.size,
-            infiniteLoop = true
+            // pageCount = images.size,
+            // infiniteLoop = true
         )
 
         // val isDragEnabled = remember { mutableStateOf(false) }
@@ -81,9 +81,10 @@ class SliderFragment : Fragment() {
 
         Box(Modifier.background(Color.Black)) {
             HorizontalPager(
+                count = images.size,
                 state = pagerState,
                 modifier = Modifier.fillMaxSize(),
-                dragEnabled = true,
+                // dragEnabled = true,
                 itemSpacing = spacingState.value.dp
             ) { pageIdx ->
 

@@ -40,7 +40,7 @@ class OnboardFragment : Fragment() {
     @Composable
     fun Splash() {
         val pages = listOf("One", "Two", "Three", "Four", "Five", "Six", "Seven")
-        val pagerState = rememberPagerState(pageCount = pages.size)
+        val pagerState = rememberPagerState()
 
         Column {
 
@@ -65,6 +65,7 @@ class OnboardFragment : Fragment() {
             }
 
             HorizontalPager(
+                count = pages.size,
                 state = pagerState,
                 modifier = Modifier.fillMaxSize()
             ) { page ->

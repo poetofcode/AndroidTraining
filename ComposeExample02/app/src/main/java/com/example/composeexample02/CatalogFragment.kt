@@ -69,7 +69,7 @@ class CatalogFragment : Fragment() {
     @Composable
     fun CatalogRoot() {
         val isReady by localModel.current.isReady.observeAsState(false)
-        val pagerState = rememberPagerState(pageCount = localModel.current.tabNames.size)
+        val pagerState = rememberPagerState(/*pageCount = localModel.current.tabNames.size */)
 
         Column {
 
@@ -95,6 +95,7 @@ class CatalogFragment : Fragment() {
             }
 
             Skeleton.HorizontalPager(
+                count = localModel.current.tabNames.size,
                 state = pagerState,
                 modifier = Modifier.fillMaxSize(),
                 preview = {

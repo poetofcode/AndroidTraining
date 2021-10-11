@@ -178,12 +178,13 @@ class Skeleton {
         @ExperimentalPagerApi
         @Composable
         fun HorizontalPager(
+            count: Int,
             state: PagerState,
             modifier: Modifier = Modifier,
             reverseLayout: Boolean = false,
             itemSpacing: Dp = 0.dp,
             dragEnabled: Boolean = true,
-            flingBehavior: FlingBehavior = PagerDefaults.defaultPagerFlingConfig(state),
+            flingBehavior: FlingBehavior = PagerDefaults.flingBehavior(state),
             verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
             horizontalAlignment: Alignment.Horizontal = Alignment.CenterHorizontally,
             isLoading: Boolean = true,
@@ -191,14 +192,15 @@ class Skeleton {
             content: @Composable PagerScope.(page: Int) -> Unit
         ) {
             _HorizontalPager(
-                state,
+                count,
                 modifier,
+                state,
                 reverseLayout,
                 itemSpacing,
-                !isLoading,
                 flingBehavior,
                 verticalAlignment,
-                horizontalAlignment
+                //horizontalAlignment
+                //!isLoading,
             ) { pageIndex ->
                 if (isLoading) {
                     preview?.invoke(pageIndex)
