@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,19 +44,15 @@ class GalleryFragment : Fragment() {
     @Composable
     fun Root() {
         val images = FakeData.IMAGES
-        val pagerState = rememberPagerState(
-            // pageCount = images.size,
-            // infiniteLoop = true
-        )
-
-        // val isDragEnabled = remember { mutableStateOf(false) }
+        val pagerState = rememberPagerState()
 
         val current = pagerState.currentPage
         val target = pagerState.targetPage ?: current
 
-        // println("mylog spacing: ${spacingState.value}, curr: $current, target: $target")
-
-        Box(Modifier.background(Color.Black)) {
+        Box(
+            Modifier
+                .background(Color.Black)
+                .fillMaxSize()) {
             HorizontalPager(
                 count = images.size,
                 state = pagerState,
@@ -63,15 +60,10 @@ class GalleryFragment : Fragment() {
                 itemSpacing = 0.dp
             ) { pageIdx ->
 
-                val pageOffset = calculateCurrentOffsetForPage(pageIdx).absoluteValue
-
-//                ZoomableImage(
-//                    imageUrl = images[pageIdx],
-//                    isActive = pagerState.currentPage == pageIdx
-//                )
-
                 GlideImage(
-                    request = images[pageIdx]
+                    modifier = Modifier.fillMaxSize(),
+                    request = images[pageIdx],
+                    contentScale = ContentScale.Fit
                 )
 
             }

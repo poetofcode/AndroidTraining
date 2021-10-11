@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_graph"
-    app:startDestination="@id/sliderFragment">
+    app:startDestination="@id/galleryFragment">
 
     <fragment
         android:id="@+id/splashFragment"
@@ -40,5 +40,9 @@
         android:id="@+id/sliderFragment"
         android:name="com.example.composeexample02.SliderFragment"
         android:label="SliderFragment" />
+    <fragment
+        android:id="@+id/galleryFragment"
+        android:name="com.example.composeexample02.GalleryFragment"
+        android:label="GalleryFragment" />
 
 </navigation>
