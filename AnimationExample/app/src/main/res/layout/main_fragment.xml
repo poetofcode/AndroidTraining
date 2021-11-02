@@ -25,7 +25,11 @@
             android:contentDescription="@null"
             android:src="@drawable/sample" />
 
-
+        <Button
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Animate!"/>
 
     </LinearLayout>
 
