@@ -3,5 +3,7 @@ package com.example.animationexample.ui.main
 import androidx.lifecycle.ViewModel
 
 class MainViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
+
+    val messageText: String = "String from Binding!"
+
 }
