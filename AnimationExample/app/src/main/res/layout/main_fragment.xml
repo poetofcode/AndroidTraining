@@ -29,7 +29,8 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Animate!"/>
+            android:text="Animate!"
+            android:onClick="@{viewModel::onAnimateButtonClick}"/>
 
     </LinearLayout>
 
