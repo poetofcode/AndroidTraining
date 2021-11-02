@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 
 class MainViewModel : ViewModel() {
 
-    val messageText: String = "String from Binding!"
     val isRotated: ObservableField<Boolean> = ObservableField()
 
     fun init() {

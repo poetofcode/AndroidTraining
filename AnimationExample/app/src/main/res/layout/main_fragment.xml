@@ -24,7 +24,7 @@
             android:padding="0dp"
             android:contentDescription="@null"
             android:src="@drawable/sample"
-            android:rotation="@{viewModel.isRotated ? 90 : 0}"/>
+            app:anim="@{viewModel.isRotated ? @anim/rotate : @anim/no_anim}"/>
 
         <Button
             android:layout_width="300dp"
