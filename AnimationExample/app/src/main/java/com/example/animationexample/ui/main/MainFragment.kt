@@ -32,6 +32,8 @@ class MainFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         binding.viewModel = viewModel
+
+        viewModel.init()
     }
 
 }

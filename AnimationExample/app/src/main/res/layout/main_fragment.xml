@@ -23,7 +23,8 @@
             android:layout_marginTop="20dp"
             android:padding="0dp"
             android:contentDescription="@null"
-            android:src="@drawable/sample" />
+            android:src="@drawable/sample"
+            android:rotation="@{viewModel.isRotated ? 90 : 0}"/>
 
         <Button
             android:layout_width="300dp"
