@@ -1,12 +1,16 @@
 package com.example.composeexample02
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
@@ -24,7 +28,6 @@ import androidx.fragment.app.activityViewModels
 import coil.compose.rememberImagePainter
 import com.example.composeexample02.model.Cat
 import com.example.composeexample02.model.FragViewModel
-import com.google.accompanist.glide.rememberGlidePainter
 
 class CommandFragment : Fragment() {
     private val model: FragViewModel by activityViewModels()
@@ -40,7 +43,6 @@ class CommandFragment : Fragment() {
             }
         }
     }
-
 }
 
 @Composable
@@ -82,12 +84,14 @@ fun MovieItem(movie: Cat) {
                 // placeholder(previewPlaceholderResId)
             }
         )
-
         Image(
             painter = painter,
             contentDescription = null,
-            modifier = Modifier.fillMaxWidth().height(150.dp).padding(10.dp),
-            contentScale = ContentScale.FillWidth
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(150.dp)
+                .padding(10.dp),
+            contentScale = ContentScale.Crop
         )
 
         //
