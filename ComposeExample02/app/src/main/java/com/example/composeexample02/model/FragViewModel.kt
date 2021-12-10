@@ -1,10 +1,8 @@
 package com.example.composeexample02.model
 
 import androidx.compose.ui.graphics.Color
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.example.composeexample02.util.SingleLiveEvent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -29,6 +27,24 @@ class FragViewModel : ViewModel() {
     private val _isContentReady: MutableLiveData<Boolean> = MutableLiveData(false)
     val isContentReady: LiveData<Boolean> = _isContentReady
 
+    val events: SingleLiveEvent<ColorUIEvent> = SingleLiveEvent()
+
+    val eventObserver = Observer<ColorUIEvent> { event ->
+            when (event) {
+                is ColorUIEvent.ClickEvent -> {
+                    println("mylog YES! IT WORKS")
+                }
+
+                is ColorUIEvent.ImageClickEvent -> {
+
+                }
+
+                is ColorUIEvent.LikeEvent -> {
+
+                }
+            }
+        }
+
     init {
         viewModelScope.launch {
             delay(3000L)
@@ -37,5 +53,12 @@ class FragViewModel : ViewModel() {
             delay(2000L)
             _isContentReady.postValue(true)
         }
+
+        events.observeForever(eventObserver)
+    }
+
+    override fun onCleared() {
+        events.removeObserver(eventObserver)
+        super.onCleared()
     }
 }

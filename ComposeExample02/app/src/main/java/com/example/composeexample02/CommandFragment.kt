@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -12,6 +13,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,7 +26,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.composeexample02.entity.FakeData.Companion.COLOR_LIST
 import com.example.composeexample02.model.ColorItem
+import com.example.composeexample02.model.ColorUIEvent
 import com.example.composeexample02.model.FragViewModel
+import com.example.composeexample02.util.SingleLiveEvent
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 
 class CommandFragment : Fragment() {
     private val model: FragViewModel by activityViewModels()
@@ -35,14 +42,14 @@ class CommandFragment : Fragment() {
     ): View? {
         return ComposeView(requireContext()).apply {
             setContent {
-                ColorViewList(COLOR_LIST)
+                ColorViewList(COLOR_LIST, model.events)
             }
         }
     }
 }
 
 @Composable
-fun ColorViewList(colors: List<ColorItem>) {
+fun ColorViewList(colors: List<ColorItem>, events: SingleLiveEvent<ColorUIEvent>) {
     Column {
         Text(
             text = "Цвета",
@@ -53,19 +60,23 @@ fun ColorViewList(colors: List<ColorItem>) {
 
         LazyColumn {
             items(items = colors) {
-                ColorViewItem(col = it)
+                ColorViewItem(col = it, events = events)
             }
         }
     }
 }
 
 @Composable
-fun ColorViewItem(col: ColorItem) {
+fun ColorViewItem(col: ColorItem, events: SingleLiveEvent<ColorUIEvent>) {
+
     Column(
         Modifier
             .padding(10.dp)
             .background(Color.LightGray)
-            .fillMaxWidth()) {
+            .fillMaxWidth()
+            .clickable {
+                events.postValue(ColorUIEvent.ClickEvent(col))
+            }) {
         Text(
             text = col.title,
             fontSize = 20.sp,
