@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.composeexample02.entity.FakeData.Companion.cats
+import com.example.composeexample02.entity.FakeData.Companion.CATS
 import com.example.composeexample02.model.Cat
 import com.example.composeexample02.model.FragViewModel
 import com.google.accompanist.glide.rememberGlidePainter
@@ -76,7 +76,7 @@ class PendingWidgets : Fragment() {
     @Composable
     fun CatList(isLoading: Boolean = false) {
         PendingColumn(isLoading = isLoading, placeholder = ph) {
-            cats.forEach {
+            CATS.forEach {
                 item {
                     PendingCatRow(it)
                 }

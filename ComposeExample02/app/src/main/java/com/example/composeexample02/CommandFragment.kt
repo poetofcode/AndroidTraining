@@ -15,14 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.composeexample02.entity.FakeData.Companion.colorList
+import com.example.composeexample02.entity.FakeData.Companion.COLOR_LIST
 import com.example.composeexample02.model.ColorItem
 import com.example.composeexample02.model.FragViewModel
 
@@ -36,7 +35,7 @@ class CommandFragment : Fragment() {
     ): View? {
         return ComposeView(requireContext()).apply {
             setContent {
-                ColorViewList(colorList)
+                ColorViewList(COLOR_LIST)
             }
         }
     }

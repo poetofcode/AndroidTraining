@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -27,14 +26,13 @@ import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.composeexample02.entity.FakeData.Companion.cats
-import com.example.composeexample02.entity.FakeData.Companion.tabNames
+import com.example.composeexample02.entity.FakeData.Companion.CATS
+import com.example.composeexample02.entity.FakeData.Companion.TAB_NAMES
 import com.example.composeexample02.model.Cat
 import com.example.composeexample02.model.FragViewModel
 import com.example.composeexample02.shimmer.shimmer
 import com.example.composeexample02.skeleton.Skeleton
 import com.example.composeexample02.skeleton.preview
-import com.google.accompanist.glide.rememberGlidePainter
 import com.google.accompanist.pager.*
 import kotlin.math.absoluteValue
 import kotlin.math.max
@@ -92,13 +90,13 @@ class CatalogFragment : Fragment() {
                 isLoading = !isReady
             ) {
                 // Add tabs for all of our pages
-                tabNames.forEach { title ->
+                TAB_NAMES.forEach { title ->
                     TabView(text = title)
                 }
             }
 
             Skeleton.HorizontalPager(
-                count = tabNames.size,
+                count = TAB_NAMES.size,
                 state = pagerState,
                 modifier = Modifier.fillMaxSize(),
                 preview = {
@@ -179,7 +177,7 @@ class CatalogFragment : Fragment() {
     fun PageView(pageIndex: Int, bgColor: Color, isLoading: Boolean = false) {
         val typography = MaterialTheme.typography
         val isContentReady by localModel.current.isContentReady.observeAsState(false)
-        val cats = cats
+        val cats = CATS
 
         Surface(
             color = bgColor,
