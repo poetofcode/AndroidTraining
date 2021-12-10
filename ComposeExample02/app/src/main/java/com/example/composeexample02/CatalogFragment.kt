@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.example.composeexample02.entity.FakeData.Companion.cats
+import com.example.composeexample02.entity.FakeData.Companion.tabNames
 import com.example.composeexample02.model.Cat
 import com.example.composeexample02.model.FragViewModel
 import com.example.composeexample02.shimmer.shimmer
@@ -90,13 +92,13 @@ class CatalogFragment : Fragment() {
                 isLoading = !isReady
             ) {
                 // Add tabs for all of our pages
-                localModel.current.tabNames.forEach { title ->
+                tabNames.forEach { title ->
                     TabView(text = title)
                 }
             }
 
             Skeleton.HorizontalPager(
-                count = localModel.current.tabNames.size,
+                count = tabNames.size,
                 state = pagerState,
                 modifier = Modifier.fillMaxSize(),
                 preview = {
@@ -177,7 +179,7 @@ class CatalogFragment : Fragment() {
     fun PageView(pageIndex: Int, bgColor: Color, isLoading: Boolean = false) {
         val typography = MaterialTheme.typography
         val isContentReady by localModel.current.isContentReady.observeAsState(false)
-        val cats = localModel.current.cats
+        val cats = cats
 
         Surface(
             color = bgColor,

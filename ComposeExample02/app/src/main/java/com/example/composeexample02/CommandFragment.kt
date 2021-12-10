@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.example.composeexample02.entity.FakeData.Companion.colorList
 import com.example.composeexample02.model.ColorItem
 import com.example.composeexample02.model.FragViewModel
 
@@ -35,7 +36,7 @@ class CommandFragment : Fragment() {
     ): View? {
         return ComposeView(requireContext()).apply {
             setContent {
-                ColorViewList(model.colorList)
+                ColorViewList(colorList)
             }
         }
     }
