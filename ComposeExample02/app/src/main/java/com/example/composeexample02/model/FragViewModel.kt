@@ -29,12 +29,6 @@ class FragViewModel : ViewModel() {
     private val _isContentReady: MutableLiveData<Boolean> = MutableLiveData(false)
     val isContentReady: LiveData<Boolean> = _isContentReady
 
-    class OnClickEvent: UIEvent {
-        override fun execute() {
-
-        }
-    }
-
     init {
         viewModelScope.launch {
             delay(3000L)
