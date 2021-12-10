@@ -48,8 +48,10 @@ class CommandFragment : Fragment() {
     }
 }
 
+typealias Events = SingleLiveEvent<ColorUIEvent>
+
 @Composable
-fun ColorViewList(colors: List<ColorItem>, events: SingleLiveEvent<ColorUIEvent>) {
+fun ColorViewList(colors: List<ColorItem>, events: Events) {
     Column {
         Text(
             text = "Цвета",
@@ -67,7 +69,7 @@ fun ColorViewList(colors: List<ColorItem>, events: SingleLiveEvent<ColorUIEvent>
 }
 
 @Composable
-fun ColorViewItem(col: ColorItem, events: SingleLiveEvent<ColorUIEvent>) {
+fun ColorViewItem(col: ColorItem, events: Events) {
 
     Column(
         Modifier
