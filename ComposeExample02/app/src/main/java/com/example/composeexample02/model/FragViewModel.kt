@@ -1,5 +1,6 @@
 package com.example.composeexample02.model
 
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +11,13 @@ import kotlinx.coroutines.launch
 data class Cat(
     val text: String,
     val imageUrl: String,
+    val isFavorite: Boolean = false
+)
+
+data class ColorItem(
+    val title: String,
+    val hex: String,
+    val value: Color,
     val isFavorite: Boolean = false
 )
 
@@ -56,6 +64,10 @@ class FragViewModel : ViewModel() {
 
     val tabNames = listOf("Одежда", "Обувь", "Футболки", "Бейсболки", "Мужское", "Женское", "Детское")
 
-
+    val colorList = listOf(
+        ColorItem("Синий", "#0000FF", Color.Blue),
+        ColorItem("Красный", "#FF0000", Color.Red),
+        ColorItem("Зелёный", "#00FF00", Color.Green)
+    )
 
 }
