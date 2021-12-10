@@ -39,7 +39,7 @@ import kotlin.math.max
 
 class CatalogFragment : Fragment() {
     private val model: FragViewModel by activityViewModels()
-    private val localModel = compositionLocalOf<FragViewModel> { error("No model found!") }
+    private val localModel = compositionLocalOf<FragViewModel> { model }
 
     @ExperimentalPagerApi
     override fun onCreateView(
@@ -47,6 +47,7 @@ class CatalogFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val localModel = compositionLocalOf<FragViewModel> { FragViewModel() }
         return ComposeView(requireContext()).apply {
             setContent {
                 CompositionLocalProvider(localModel provides model) {
@@ -212,16 +213,16 @@ class CatalogFragment : Fragment() {
             //
             // Cat Avatar
             //
-            Image(
-                painter = rememberGlidePainter(
-                    request = cat.imageUrl,
-                    // previewPlaceholder = R.drawable.placeholder
-                ),
-                contentDescription = "",
-                modifier = Modifier
-                    .size(60.dp)
-                    .preview(isLoading)
-            )
+//            Image(
+//                painter = rememberGlidePainter(
+//                    request = cat.imageUrl,
+//                    // previewPlaceholder = R.drawable.placeholder
+//                ),
+//                contentDescription = "",
+//                modifier = Modifier
+//                    .size(60.dp)
+//                    .preview(isLoading)
+//            )
             Spacer(Modifier.width(10.dp))
             //
             // Cat Name
