@@ -117,6 +117,7 @@ fun ColorViewItem(col: ColorItem, events: SingleLiveEvent<ColorUIEvent>) {
             modifier = Modifier
                 .padding(10.dp)
                 .align(Alignment.End)
+                .clickable { events.postValue(ColorUIEvent.LikeEvent(col, !col.isFavorite)) }
         )
     }
 }

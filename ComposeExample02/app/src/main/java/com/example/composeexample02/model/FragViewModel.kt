@@ -28,19 +28,18 @@ class FragViewModel : ViewModel() {
     val isContentReady: LiveData<Boolean> = _isContentReady
 
     val events: SingleLiveEvent<ColorUIEvent> = SingleLiveEvent()
-
-    val eventObserver = Observer<ColorUIEvent> { event ->
+    private val eventObserver = Observer<ColorUIEvent> { event ->
             when (event) {
                 is ColorUIEvent.ClickEvent -> {
                     println("mylog YES! IT WORKS")
                 }
 
                 is ColorUIEvent.ImageClickEvent -> {
-
+                    TODO()
                 }
 
                 is ColorUIEvent.LikeEvent -> {
-
+                    println("mylog Like invoked on ${event.item.title}, isFav: ${event.isFavorite}")
                 }
             }
         }
