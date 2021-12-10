@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
@@ -49,6 +50,15 @@ class CommandFragment : Fragment() {
 }
 
 typealias Events = SingleLiveEvent<ColorUIEvent>
+
+@Preview(showSystemUi = true)
+@Composable
+fun DefaultPreview() {
+    ColorViewList(
+        colors = COLOR_LIST,
+        events = Events()
+    )
+}
 
 @Composable
 fun ColorViewList(colors: List<ColorItem>, events: Events) {
