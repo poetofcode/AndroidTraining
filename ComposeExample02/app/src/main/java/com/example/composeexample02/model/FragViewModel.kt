@@ -19,7 +19,11 @@ data class ColorItem(
     val hex: String,
     val value: Color,
     val isFavorite: Boolean = false
-)
+) {
+    companion object {
+        val DEFAULT = ColorItem("", "", Color.Transparent)
+    }
+}
 
 class FragViewModel : ViewModel() {
 
@@ -41,6 +45,10 @@ class FragViewModel : ViewModel() {
 
             is ColorUIEvent.LikeEvent -> {
                 println("mylog Like invoked on ${event.item.title}, isFav: ${event.isFavorite}")
+            }
+
+            is ColorUIEvent.TitleClickEvent -> {
+                println("mylog On title clicked!")
             }
         }
     }

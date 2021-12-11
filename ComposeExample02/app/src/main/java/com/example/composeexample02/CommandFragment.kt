@@ -62,7 +62,9 @@ fun ColorViewList(colors: List<ColorItem>, events: ColorEvents) {
             text = "Цвета",
             fontSize = 24.sp,
             color = Color.Blue,
-            modifier = Modifier.padding(10.dp)
+            modifier = Modifier.padding(10.dp).clickable {
+                events.invoke(ColorUIEvent.TitleClickEvent())
+            }
         )
 
         LazyColumn {
