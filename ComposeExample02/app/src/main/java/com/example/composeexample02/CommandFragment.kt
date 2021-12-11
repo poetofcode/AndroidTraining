@@ -49,19 +49,19 @@ class CommandFragment : Fragment() {
     }
 }
 
-typealias Events = SingleLiveEvent<ColorUIEvent>
+typealias Events<T> = (T) -> Unit
 
 @Preview(showSystemUi = true)
 @Composable
 fun DefaultPreview() {
     ColorViewList(
         colors = COLOR_LIST,
-        events = Events()
+        events = {}
     )
 }
 
 @Composable
-fun ColorViewList(colors: List<ColorItem>, events: Events) {
+fun ColorViewList(colors: List<ColorItem>, events: Events<ColorUIEvent>) {
     Column {
         Text(
             text = "Цвета",
@@ -79,7 +79,7 @@ fun ColorViewList(colors: List<ColorItem>, events: Events) {
 }
 
 @Composable
-fun ColorViewItem(col: ColorItem, events: Events) {
+fun ColorViewItem(col: ColorItem, events: Events<ColorUIEvent>) {
 
     Column(
         Modifier
@@ -87,7 +87,7 @@ fun ColorViewItem(col: ColorItem, events: Events) {
             .background(Color.LightGray)
             .fillMaxWidth()
             .clickable {
-                events.postValue(ColorUIEvent.ClickEvent(col))
+                events.invoke(ColorUIEvent.ClickEvent(col))
             }) {
         Text(
             text = col.title,
@@ -129,7 +129,7 @@ fun ColorViewItem(col: ColorItem, events: Events) {
             modifier = Modifier
                 .padding(10.dp)
                 .align(Alignment.End)
-                .clickable { events.postValue(ColorUIEvent.LikeEvent(col, !col.isFavorite)) }
+                .clickable { events.invoke(ColorUIEvent.LikeEvent(col, !col.isFavorite)) }
         )
     }
 }

@@ -1,8 +1,10 @@
 package com.example.composeexample02.model
 
 import androidx.compose.ui.graphics.Color
-import androidx.lifecycle.*
-import com.example.composeexample02.util.SingleLiveEvent
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -27,22 +29,21 @@ class FragViewModel : ViewModel() {
     private val _isContentReady: MutableLiveData<Boolean> = MutableLiveData(false)
     val isContentReady: LiveData<Boolean> = _isContentReady
 
-    val events: SingleLiveEvent<ColorUIEvent> = SingleLiveEvent()
-    private val eventObserver = Observer<ColorUIEvent> { event ->
-            when (event) {
-                is ColorUIEvent.ClickEvent -> {
-                    println("mylog YES! IT WORKS")
-                }
+    val events: (ColorUIEvent) -> Unit = { event ->
+        when (event) {
+            is ColorUIEvent.ClickEvent -> {
+                println("mylog YES! IT WORKS")
+            }
 
-                is ColorUIEvent.ImageClickEvent -> {
-                    TODO()
-                }
+            is ColorUIEvent.ImageClickEvent -> {
+                TODO()
+            }
 
-                is ColorUIEvent.LikeEvent -> {
-                    println("mylog Like invoked on ${event.item.title}, isFav: ${event.isFavorite}")
-                }
+            is ColorUIEvent.LikeEvent -> {
+                println("mylog Like invoked on ${event.item.title}, isFav: ${event.isFavorite}")
             }
         }
+    }
 
     init {
         viewModelScope.launch {
@@ -52,12 +53,6 @@ class FragViewModel : ViewModel() {
             delay(2000L)
             _isContentReady.postValue(true)
         }
-
-        events.observeForever(eventObserver)
     }
 
-    override fun onCleared() {
-        events.removeObserver(eventObserver)
-        super.onCleared()
-    }
 }
