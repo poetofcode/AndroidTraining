@@ -13,8 +13,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,9 +27,6 @@ import com.example.composeexample02.entity.FakeData.Companion.COLOR_LIST
 import com.example.composeexample02.model.ColorItem
 import com.example.composeexample02.model.ColorUIEvent
 import com.example.composeexample02.model.FragViewModel
-import com.example.composeexample02.util.SingleLiveEvent
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
 
 class CommandFragment : Fragment() {
     private val model: FragViewModel by activityViewModels()
@@ -43,13 +38,13 @@ class CommandFragment : Fragment() {
     ): View? {
         return ComposeView(requireContext()).apply {
             setContent {
-                ColorViewList(COLOR_LIST, model.events)
+                ColorViewList(COLOR_LIST, model.onEvent)
             }
         }
     }
 }
 
-typealias Events<T> = (T) -> Unit
+typealias ColorEvents = (ColorUIEvent) -> Unit
 
 @Preview(showSystemUi = true)
 @Composable
@@ -61,7 +56,7 @@ fun DefaultPreview() {
 }
 
 @Composable
-fun ColorViewList(colors: List<ColorItem>, events: Events<ColorUIEvent>) {
+fun ColorViewList(colors: List<ColorItem>, events: ColorEvents) {
     Column {
         Text(
             text = "Цвета",
@@ -79,7 +74,7 @@ fun ColorViewList(colors: List<ColorItem>, events: Events<ColorUIEvent>) {
 }
 
 @Composable
-fun ColorViewItem(col: ColorItem, events: Events<ColorUIEvent>) {
+fun ColorViewItem(col: ColorItem, events: ColorEvents) {
 
     Column(
         Modifier

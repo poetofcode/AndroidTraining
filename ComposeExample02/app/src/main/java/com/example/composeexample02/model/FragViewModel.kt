@@ -29,7 +29,7 @@ class FragViewModel : ViewModel() {
     private val _isContentReady: MutableLiveData<Boolean> = MutableLiveData(false)
     val isContentReady: LiveData<Boolean> = _isContentReady
 
-    val events: (ColorUIEvent) -> Unit = { event ->
+    val onEvent: (ColorUIEvent) -> Unit = { event ->
         when (event) {
             is ColorUIEvent.ClickEvent -> {
                 println("mylog YES! IT WORKS")
