@@ -43,7 +43,9 @@ class FakeData {
         val COLOR_LIST = listOf(
             ColorItem("Синий", "#0000FF", Color.Blue),
             ColorItem("Красный", "#FF0000", Color.Red),
-            ColorItem("Зелёный", "#00FF00", Color.Green)
+            ColorItem("Зелёный", "#00FF00", Color.Green),
+            ColorItem("Жёлтый", "#FFFF00", Color.Yellow),
+            ColorItem("Пурпурный", "#FF00FF", Color.Magenta)
         )
     }
 

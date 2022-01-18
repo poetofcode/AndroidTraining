@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
@@ -16,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -57,21 +60,42 @@ fun DefaultPreview() {
 
 @Composable
 fun ColorViewList(colors: List<ColorItem>, events: ColorEvents) {
+    val lazyListState = rememberLazyListState()
+    var scrolledY = 0f
+    var previousOffset = 0
+
     Column {
-        Text(
-            text = "Цвета",
-            fontSize = 24.sp,
-            color = Color.Blue,
-            modifier = Modifier.padding(10.dp).clickable {
-                events.invoke(ColorUIEvent.TitleClickEvent())
-            }
-        )
 
         LazyColumn {
+            item {
+                TitleBar(modifier = Modifier)
+            }
+
             items(items = colors) {
                 ColorViewItem(col = it, events = events)
             }
         }
+    }
+}
+
+@Composable
+fun TitleBar(modifier: Modifier) {
+    Box(
+        modifier = modifier
+            .border(2.dp, shape = RectangleShape, color = Color.Cyan)
+            .background(color = Color.Cyan)
+            .fillMaxWidth()
+            .padding(16.dp)
+            .clickable {
+                // events.invoke(ColorUIEvent.TitleClickEvent())
+            }
+    ) {
+        Text(
+            text = "Цвета",
+            fontSize = 24.sp,
+            color = Color.Blue,
+            modifier = Modifier
+        )
     }
 }
 
