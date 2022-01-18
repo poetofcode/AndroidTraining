@@ -31,6 +31,9 @@ import com.example.composeexample02.entity.FakeData.Companion.COLOR_LIST
 import com.example.composeexample02.model.ColorItem
 import com.example.composeexample02.model.ColorUIEvent
 import com.example.composeexample02.model.FragViewModel
+import me.onebone.toolbar.CollapsingToolbarScaffold
+import me.onebone.toolbar.ScrollStrategy
+import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 
 class CommandFragment : Fragment() {
     private val model: FragViewModel by activityViewModels()
@@ -62,23 +65,16 @@ fun DefaultPreview() {
 @Composable
 fun ColorViewList(colors: List<ColorItem>, events: ColorEvents) {
     val lazyListState = rememberLazyListState()
-    var scrolledY = 0f
-    var previousOffset = 0
 
-    Column {
-
+    CollapsingToolbarScaffold(
+        state = rememberCollapsingToolbarScaffoldState(), // provide the state of the scaffold
+        toolbar = {
+            TitleBar(modifier = Modifier.fillMaxWidth())
+        },
+        scrollStrategy = ScrollStrategy.EnterAlways,
+        modifier = Modifier
+    ) {
         LazyColumn(state = lazyListState) {
-            item {
-                TitleBar(modifier = Modifier
-                    .graphicsLayer {
-                        scrolledY += lazyListState.firstVisibleItemScrollOffset - previousOffset
-                        translationY = scrolledY * 0.5f
-                        previousOffset = lazyListState.firstVisibleItemScrollOffset
-                    }
-                    // .height(240.dp)
-                    .fillMaxWidth())
-            }
-
             items(items = colors) {
                 ColorViewItem(col = it, events = events)
             }
