@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,9 +67,16 @@ fun ColorViewList(colors: List<ColorItem>, events: ColorEvents) {
 
     Column {
 
-        LazyColumn {
+        LazyColumn(state = lazyListState) {
             item {
-                TitleBar(modifier = Modifier)
+                TitleBar(modifier = Modifier
+                    .graphicsLayer {
+                        scrolledY += lazyListState.firstVisibleItemScrollOffset - previousOffset
+                        translationY = scrolledY * 0.5f
+                        previousOffset = lazyListState.firstVisibleItemScrollOffset
+                    }
+                    // .height(240.dp)
+                    .fillMaxWidth())
             }
 
             items(items = colors) {
