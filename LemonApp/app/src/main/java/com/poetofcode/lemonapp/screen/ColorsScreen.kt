@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.poetofcode.lemonapp.ui.components.LemonSliderColors
 import com.poetofcode.lemonapp.ui.theme.AlmostBlack
 import com.poetofcode.lemonapp.ui.theme.LemonAppTheme
 import com.poetofcode.lemonapp.ui.theme.White
@@ -58,11 +59,7 @@ fun AlphaColorSample() {
         Spacer(Modifier.size(16.dp))
         Slider(
             value = sliderPosition.value,
-            colors = SliderDefaults.colors(
-                activeTickColor = MaterialTheme.colors.secondary,
-                activeTrackColor = MaterialTheme.colors.secondary,
-                thumbColor = MaterialTheme.colors.secondary
-            ),
+            colors = LemonSliderColors,
             onValueChange = { sliderPosition.value = it }
         )
     }
