@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.poetofcode.lemonapp.ui.theme.LemonAppTheme
 
 @Composable
 @Preview(showSystemUi = true, showBackground = true)
@@ -21,22 +22,24 @@ private fun Preview() {
 fun MenuScreen(
     onNavigateToColorsScreen: () -> Unit = {}
 ) {
-    Scaffold(topBar = {
-        TopBar(title = "Menu", onDayNightSwitchClick = {})
-    }) { paddings ->
-        Box(Modifier.padding(paddingValues = paddings)) {
-            Surface(Modifier.padding(16.dp)) {
-                Column {
-                    MenuItem(title = "Colors") {
-                        onNavigateToColorsScreen()
-                    }
+    LemonAppTheme {
+        Scaffold(topBar = {
+            TopBar(title = "Menu", onDayNightSwitchClick = {})
+        }) { paddings ->
+            Box(Modifier.padding(paddingValues = paddings)) {
+                Surface(Modifier.padding(16.dp)) {
+                    Column {
+                        MenuItem(title = "Colors") {
+                            onNavigateToColorsScreen()
+                        }
 
-                    MenuItem(title = "Fonts") {
-                        // TODO
-                    }
+                        MenuItem(title = "Fonts") {
+                            // TODO
+                        }
 
-                    MenuItem(title = "Other") {
-                        // TODO
+                        MenuItem(title = "Other") {
+                            // TODO
+                        }
                     }
                 }
             }

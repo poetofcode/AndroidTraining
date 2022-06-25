@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.poetofcode.lemonapp.ui.theme.LemonAppTheme
 import kotlin.math.roundToInt
 
 @Composable
@@ -29,13 +30,15 @@ private val samples: List<@Composable () -> Unit> = listOf(
 
 @Composable
 fun ColorsScreen() {
-    Scaffold(topBar = {
-        TopBar(title = "Colors", onDayNightSwitchClick = {})
-    }) { paddings ->
-        LazyColumn(Modifier.padding(paddingValues = paddings)) {
-            items(samples) {
-                BorderedBox {
-                    it()
+    LemonAppTheme {
+        Scaffold(topBar = {
+            TopBar(title = "Colors", onDayNightSwitchClick = {})
+        }) { paddings ->
+            LazyColumn(Modifier.padding(paddingValues = paddings)) {
+                items(samples) {
+                    BorderedBox {
+                        it()
+                    }
                 }
             }
         }

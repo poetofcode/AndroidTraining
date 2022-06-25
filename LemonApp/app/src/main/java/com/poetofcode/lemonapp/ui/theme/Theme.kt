@@ -1,5 +1,6 @@
 package com.poetofcode.lemonapp.ui.theme
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
@@ -7,24 +8,24 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = AlmostBlack,
+    primaryVariant = AlmostBlack,
+    secondary = AlmostBlack
 )
 
+@SuppressLint("ConflictingOnColor")
 private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = YellowDark,
+    primaryVariant = YellowMain,
+    secondary = AccentColor,
 
-    /* Other default colors to override
-    background = Color.White,
-    surface = Color.White,
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    */
+    /* Other default colors to override */
+    background = YellowMain,
+    surface = YellowDark,
+    onPrimary = AlmostBlack,
+    onSecondary = AlmostBlack,
+    onBackground = AlmostBlack,
+    onSurface = AlmostBlack,
 )
 
 @Composable
