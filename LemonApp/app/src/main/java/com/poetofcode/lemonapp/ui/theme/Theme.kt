@@ -7,10 +7,18 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
+@SuppressLint("ConflictingOnColor")
 private val DarkColorPalette = darkColors(
     primary = AlmostBlack,
-    primaryVariant = AlmostBlack,
-    secondary = AlmostBlack
+    primaryVariant = PrimaryVariantDark,
+    secondary = AccentColor,
+
+    background = PrimaryVariantDark,
+    surface = AlmostBlack,
+    onPrimary = YellowMain,
+    onSecondary = White,
+    onBackground = White,
+    onSurface = YellowMain,
 )
 
 @SuppressLint("ConflictingOnColor")
