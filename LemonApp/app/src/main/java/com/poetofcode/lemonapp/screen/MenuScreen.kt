@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.poetofcode.lemonapp.ui.components.RoundSurface
 import com.poetofcode.lemonapp.ui.theme.LemonAppTheme
 import com.poetofcode.lemonapp.ui.theme.veryLarge
 
@@ -28,9 +29,7 @@ fun MenuScreen(
             TopBar(title = "Menu", onDayNightSwitchClick = {})
         }) { paddings ->
             Box(Modifier.padding(paddingValues = paddings)) {
-                Surface(Modifier.padding(16.dp),
-                    shape = MaterialTheme.shapes.veryLarge
-                ) {
+                RoundSurface(Modifier.padding(16.dp)) {
                     Column {
                         MenuItem(title = "Colors") {
                             onNavigateToColorsScreen()
