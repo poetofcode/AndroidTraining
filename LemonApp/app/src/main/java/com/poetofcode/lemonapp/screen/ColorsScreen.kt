@@ -17,6 +17,9 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.poetofcode.lemonapp.LocalNightMode
+import com.poetofcode.lemonapp.NightMode
+import com.poetofcode.lemonapp.isNight
 import com.poetofcode.lemonapp.ui.components.LemonSliderColors
 import com.poetofcode.lemonapp.ui.theme.AlmostBlack
 import com.poetofcode.lemonapp.ui.theme.LemonAppTheme
@@ -25,8 +28,16 @@ import kotlin.math.roundToInt
 
 @Composable
 @Preview(showSystemUi = true, showBackground = true)
-private fun Preview() {
+private fun PreviewDay() {
     ColorsScreen()
+}
+
+@Composable
+@Preview(showSystemUi = true, showBackground = true)
+private fun PreviewNight() {
+    CompositionLocalProvider(LocalNightMode provides NightMode.NIGHT) {
+        ColorsScreen()
+    }
 }
 
 private val samples: List<@Composable () -> Unit> = listOf(
@@ -35,10 +46,10 @@ private val samples: List<@Composable () -> Unit> = listOf(
 )
 
 @Composable
-fun ColorsScreen() {
-    LemonAppTheme {
+fun ColorsScreen(onDayNightSwitchClick: () -> Unit = {}) {
+    LemonAppTheme(darkTheme = LocalNightMode.current.isNight) {
         Scaffold(topBar = {
-            TopBar(title = "Colors", onDayNightSwitchClick = {})
+            TopBar(title = "Colors", onDayNightSwitchClick = { onDayNightSwitchClick() })
         }) { paddings ->
             LazyColumn(Modifier.padding(paddingValues = paddings)) {
                 items(samples) {

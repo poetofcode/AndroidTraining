@@ -36,17 +36,19 @@ fun AppEntryPoint() {
     val inSystemInDarkMode = isSystemInDarkTheme()
     val currentNightMode = remember { mutableStateOf(if (inSystemInDarkMode) NightMode.NIGHT else NightMode.DAY) }
 
+    val inverseThemeColorMode: () -> Unit = { currentNightMode.value = currentNightMode.value.inversed() }
+
     CompositionLocalProvider(LocalNightMode provides currentNightMode.value) {
         NavHost(navController, startDestination = "menu") {
             composable(route = "menu") {
                 MenuScreen(
-                    onDayNightSwitchClick = { currentNightMode.value = currentNightMode.value.inversed() },
+                    onDayNightSwitchClick = inverseThemeColorMode,
                     onNavigateToColorsScreen = { navController.navigate("menu/colors") }
                 )
             }
 
             composable(route = "menu/colors") {
-                ColorsScreen()
+                ColorsScreen(onDayNightSwitchClick = inverseThemeColorMode)
             }
         }
     }
