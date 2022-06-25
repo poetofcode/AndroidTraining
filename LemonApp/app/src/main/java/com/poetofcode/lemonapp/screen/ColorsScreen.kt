@@ -7,9 +7,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlin.math.roundToInt
 
 @Composable
 @Preview(showSystemUi = true, showBackground = true)
@@ -19,7 +23,7 @@ private fun Preview() {
 
 private val samples: List<@Composable () -> Unit> = listOf(
     { AlphaColorSample() },
-    { Text(text = "TODO") }
+    // { Text(text = "TODO") }
 )
 
 @Composable
@@ -39,7 +43,12 @@ fun ColorsScreen() {
 
 @Composable
 fun AlphaColorSample() {
-    Text(text = "Alpha sample")
+    val sliderPosition = remember { mutableStateOf(0.5f) }
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(text = "Alpha: ${(sliderPosition.value * 100).roundToInt()} %", style = MaterialTheme.typography.h5)
+        Spacer(Modifier.size(16.dp))
+        Slider(value = sliderPosition.value, onValueChange = { sliderPosition.value = it })
+    }
 }
 
 @Composable
