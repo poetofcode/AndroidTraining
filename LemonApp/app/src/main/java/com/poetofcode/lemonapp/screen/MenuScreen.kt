@@ -18,7 +18,9 @@ private fun Preview() {
 }
 
 @Composable
-fun MenuScreen() {
+fun MenuScreen(
+    onNavigateToColorsScreen: () -> Unit = {}
+) {
     Scaffold(topBar = {
         TopBar(title = "Menu", onDayNightSwitchClick = {})
     }) { paddings ->
@@ -26,7 +28,7 @@ fun MenuScreen() {
             Surface(Modifier.padding(16.dp)) {
                 Column {
                     MenuItem(title = "Colors") {
-                        // TODO
+                        onNavigateToColorsScreen()
                     }
 
                     MenuItem(title = "Fonts") {

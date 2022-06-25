@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.poetofcode.lemonapp.screen.ColorsScreen
 import com.poetofcode.lemonapp.screen.MenuScreen
 import com.poetofcode.lemonapp.ui.theme.LemonAppTheme
 
@@ -30,7 +31,11 @@ fun AppEntryPoint() {
     val navController = rememberNavController()
     NavHost(navController, startDestination = "menu") {
         composable(route = "menu") {
-            MenuScreen()
+            MenuScreen(onNavigateToColorsScreen = { navController.navigate("menu/colors") })
+        }
+
+        composable(route = "menu/colors") {
+            ColorsScreen()
         }
     }
 }
