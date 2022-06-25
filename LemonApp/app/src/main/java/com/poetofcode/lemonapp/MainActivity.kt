@@ -53,9 +53,11 @@ fun AppEntryPoint() {
 }
 
 fun NightMode.inversed() : NightMode {
-    return if (this == NightMode.NIGHT) {
+    return if (isNight) {
         NightMode.DAY
     } else {
         NightMode.NIGHT
     }
 }
+
+val NightMode.isNight get() = this == NightMode.NIGHT

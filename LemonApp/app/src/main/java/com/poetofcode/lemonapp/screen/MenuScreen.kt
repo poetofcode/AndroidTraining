@@ -10,6 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.poetofcode.lemonapp.LocalNightMode
+import com.poetofcode.lemonapp.isNight
 import com.poetofcode.lemonapp.ui.components.RoundSurface
 import com.poetofcode.lemonapp.ui.theme.LemonAppTheme
 import com.poetofcode.lemonapp.ui.theme.veryLarge
@@ -25,7 +27,7 @@ fun MenuScreen(
     onDayNightSwitchClick: () -> Unit = {},
     onNavigateToColorsScreen: () -> Unit = {},
 ) {
-    LemonAppTheme {
+    LemonAppTheme(darkTheme = LocalNightMode.current.isNight) {
         Scaffold(topBar = {
             TopBar(title = "Menu", onDayNightSwitchClick = { onDayNightSwitchClick() })
         }) { paddings ->

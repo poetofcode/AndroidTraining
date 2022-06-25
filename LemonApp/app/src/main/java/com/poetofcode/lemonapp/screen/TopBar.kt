@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.poetofcode.lemonapp.LocalNightMode
 import com.poetofcode.lemonapp.NightMode
 import com.poetofcode.lemonapp.R
+import com.poetofcode.lemonapp.isNight
 
 @Composable
 @Preview(showBackground = true)
@@ -27,7 +28,7 @@ private fun Preview() {
 @Composable
 fun TopBar(title: String, onDayNightSwitchClick: (isNight: Boolean) -> Unit) {
     val textTitle: @Composable () -> Unit = { Text(text = title) }
-    val isNight = LocalNightMode.current == NightMode.NIGHT
+    val isNight = LocalNightMode.current.isNight
     val iconResId = if (isNight) R.drawable.ic_baseline_wb_sunny_24 else R.drawable.ic_baseline_dark_mode_24
     TopAppBar(
         title = textTitle,
