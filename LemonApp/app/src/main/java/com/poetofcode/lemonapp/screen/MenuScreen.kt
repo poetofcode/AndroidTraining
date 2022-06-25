@@ -22,11 +22,12 @@ private fun Preview() {
 
 @Composable
 fun MenuScreen(
-    onNavigateToColorsScreen: () -> Unit = {}
+    onDayNightSwitchClick: () -> Unit = {},
+    onNavigateToColorsScreen: () -> Unit = {},
 ) {
     LemonAppTheme {
         Scaffold(topBar = {
-            TopBar(title = "Menu", onDayNightSwitchClick = {})
+            TopBar(title = "Menu", onDayNightSwitchClick = { onDayNightSwitchClick() })
         }) { paddings ->
             Box(Modifier.padding(paddingValues = paddings)) {
                 RoundSurface(Modifier.padding(16.dp)) {

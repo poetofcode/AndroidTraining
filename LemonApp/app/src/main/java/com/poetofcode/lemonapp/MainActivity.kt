@@ -3,11 +3,12 @@ package com.poetofcode.lemonapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
@@ -26,16 +27,35 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+enum class NightMode { DAY, NIGHT }
+val LocalNightMode = staticCompositionLocalOf { NightMode.DAY }
+
 @Composable
 fun AppEntryPoint() {
     val navController = rememberNavController()
-    NavHost(navController, startDestination = "menu") {
-        composable(route = "menu") {
-            MenuScreen(onNavigateToColorsScreen = { navController.navigate("menu/colors") })
-        }
+    val inSystemInDarkMode = isSystemInDarkTheme()
+    val currentNightMode = remember { mutableStateOf(if (inSystemInDarkMode) NightMode.NIGHT else NightMode.DAY) }
 
-        composable(route = "menu/colors") {
-            ColorsScreen()
+    CompositionLocalProvider(LocalNightMode provides currentNightMode.value) {
+        NavHost(navController, startDestination = "menu") {
+            composable(route = "menu") {
+                MenuScreen(
+                    onDayNightSwitchClick = { currentNightMode.value = currentNightMode.value.inversed() },
+                    onNavigateToColorsScreen = { navController.navigate("menu/colors") }
+                )
+            }
+
+            composable(route = "menu/colors") {
+                ColorsScreen()
+            }
         }
+    }
+}
+
+fun NightMode.inversed() : NightMode {
+    return if (this == NightMode.NIGHT) {
+        NightMode.DAY
+    } else {
+        NightMode.NIGHT
     }
 }
