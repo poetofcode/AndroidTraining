@@ -13,11 +13,11 @@ private val DarkColorPalette = darkColors(
     primary = AlmostBlack,
     primaryVariant = PrimaryVariantDark,
     secondary = AccentColor,
-
+    secondaryVariant = AccentDarkColor,
     background = PrimaryVariantDark,
     surface = AlmostBlack,
     onPrimary = YellowMain,
-    onSecondary = Color.White,
+    onSecondary = AlmostBlack,
     onBackground = Color.White,
     onSurface = YellowMain,
 )
@@ -27,7 +27,7 @@ private val LightColorPalette = lightColors(
     primary = YellowDark,
     primaryVariant = YellowMain,
     secondary = AccentColor,
-
+    secondaryVariant = AccentDarkColor,
     /* Other default colors to override */
     background = YellowMain,
     surface = YellowDark,

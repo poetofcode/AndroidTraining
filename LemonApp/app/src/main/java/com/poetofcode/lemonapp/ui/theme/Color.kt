@@ -12,6 +12,7 @@ val WhiteOfLemonApp @Composable get() = if (!LocalNightMode.current.isNight) Col
 
 val AlmostBlack = Color(0xFF202020)
 val AccentColor = Color(0xFF03DAC5)
+val AccentDarkColor = Color(0xFF009688)
 
 val PrimaryDark: Color = Color(0xFF121212)
 val PrimaryVariantDark: Color = Color(0xFF121212)

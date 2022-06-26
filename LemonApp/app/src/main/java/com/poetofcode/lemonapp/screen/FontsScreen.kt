@@ -20,6 +20,8 @@ import com.poetofcode.lemonapp.NightMode
 import com.poetofcode.lemonapp.isNight
 import com.poetofcode.lemonapp.mock.MockData
 import com.poetofcode.lemonapp.ui.components.BorderedBox
+import com.poetofcode.lemonapp.ui.components.ButtonGroup
+import com.poetofcode.lemonapp.ui.components.ButtonGroupState
 import com.poetofcode.lemonapp.ui.components.LemonSliderColors
 import com.poetofcode.lemonapp.ui.theme.AlmostBlack
 import com.poetofcode.lemonapp.ui.theme.LemonAppTheme
@@ -57,8 +59,19 @@ fun FontsScreen(onDayNightSwitchClick: () -> Unit = {}) {
 @Composable
 private fun StyleVariantsSample() {
     val sliderPosition = remember { mutableStateOf(0.5f) }
+    val buttonsState = remember {
+        mutableStateOf(ButtonGroupState(titles = listOf("Serif", "Sans serif", "Mono"),
+            activeIndex = 0)
+        )
+    }
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
+        ButtonGroup(
+            modifier = Modifier.fillMaxWidth(),
+            state = buttonsState,
+            onSelect = {
+                println("mylog ActiveIndex selected: $it")
+            }
+        )
     }
 }
 
