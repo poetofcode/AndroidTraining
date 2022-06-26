@@ -37,7 +37,7 @@ enum class Screens(val path: String) {
     FONTS("menu/fonts")
 }
 
-val START_SCREEN = Screens.FONTS
+val START_SCREEN = Screens.MENU
 
 @Composable
 fun AppEntryPoint() {

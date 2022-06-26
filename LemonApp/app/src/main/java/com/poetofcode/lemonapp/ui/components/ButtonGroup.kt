@@ -76,13 +76,9 @@ fun ButtonGroup(
                     state.value = stateValue.copy(
                         activeIndex = idx
                     )
-                    onSelect(stateValue.activeIndex)
+                    onSelect(idx)
                 }
             ) {
-                Button(onClick = { /*TODO*/ }) {
-
-                }
-
                 val cornerRadiusPercent = 30
                 val shape = when (idx) {
                     0 -> RoundedCornerShape(
