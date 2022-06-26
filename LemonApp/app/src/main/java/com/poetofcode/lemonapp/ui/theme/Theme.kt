@@ -12,12 +12,12 @@ import androidx.compose.ui.graphics.Color
 private val DarkColorPalette = darkColors(
     primary = AlmostBlack,
     primaryVariant = PrimaryVariantDark,
-    secondary = AccentColor,
-    secondaryVariant = AccentDarkColor,
+    secondary = AccentDarkColor,
+    secondaryVariant = AccentColor,
     background = PrimaryVariantDark,
     surface = AlmostBlack,
     onPrimary = YellowMain,
-    onSecondary = AlmostBlack,
+    onSecondary = Color.White,
     onBackground = Color.White,
     onSurface = YellowMain,
 )

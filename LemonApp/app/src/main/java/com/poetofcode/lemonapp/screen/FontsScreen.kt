@@ -19,13 +19,11 @@ import com.poetofcode.lemonapp.LocalNightMode
 import com.poetofcode.lemonapp.NightMode
 import com.poetofcode.lemonapp.isNight
 import com.poetofcode.lemonapp.mock.MockData
-import com.poetofcode.lemonapp.ui.components.BorderedBox
-import com.poetofcode.lemonapp.ui.components.ButtonGroup
-import com.poetofcode.lemonapp.ui.components.ButtonGroupState
-import com.poetofcode.lemonapp.ui.components.LemonSliderColors
+import com.poetofcode.lemonapp.ui.components.*
 import com.poetofcode.lemonapp.ui.theme.AlmostBlack
 import com.poetofcode.lemonapp.ui.theme.LemonAppTheme
 import com.poetofcode.lemonapp.ui.theme.WhiteOfLemonApp
+import com.poetofcode.lemonapp.ui.theme.YellowMain
 import kotlin.math.roundToInt
 
 @Composable
@@ -60,7 +58,7 @@ fun FontsScreen(onDayNightSwitchClick: () -> Unit = {}) {
 private fun StyleVariantsSample() {
     val sliderPosition = remember { mutableStateOf(0.5f) }
     val buttonsState = remember {
-        mutableStateOf(ButtonGroupState(titles = listOf("Serif", "Sans serif", "Mono"),
+        mutableStateOf(ButtonGroupState(titles = listOf("Serif", "Sans", "Mono"),
             activeIndex = 0)
         )
     }
@@ -68,6 +66,10 @@ private fun StyleVariantsSample() {
         ButtonGroup(
             modifier = Modifier.fillMaxWidth(),
             state = buttonsState,
+            colors = ButtonGroupDefaults.colors(
+                activeContent = if (LocalNightMode.current.isNight) YellowMain else AlmostBlack,
+                inactiveContent = if (LocalNightMode.current.isNight) AlmostBlack else Color.White,
+            ),
             onSelect = {
                 println("mylog ActiveIndex selected: $it")
             }
