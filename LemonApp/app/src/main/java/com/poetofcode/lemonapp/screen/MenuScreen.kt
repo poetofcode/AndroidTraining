@@ -26,6 +26,7 @@ private fun Preview() {
 fun MenuScreen(
     onDayNightSwitchClick: () -> Unit = {},
     onNavigateToColorsScreen: () -> Unit = {},
+    onNavigateToFontsScreen: () -> Unit = {},
 ) {
     LemonAppTheme(darkTheme = LocalNightMode.current.isNight) {
         Scaffold(topBar = {
@@ -39,10 +40,10 @@ fun MenuScreen(
                         }
 
                         MenuItem(title = "Fonts") {
-                            // TODO
+                            onNavigateToFontsScreen()
                         }
 
-                        MenuItem(title = "Other") {
+                        MenuItem(title = "Lists") {
                             // TODO
                         }
                     }

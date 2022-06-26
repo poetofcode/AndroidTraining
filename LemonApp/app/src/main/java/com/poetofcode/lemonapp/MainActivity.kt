@@ -15,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.poetofcode.lemonapp.screen.ColorsScreen
+import com.poetofcode.lemonapp.screen.FontsScreen
 import com.poetofcode.lemonapp.screen.MenuScreen
 import com.poetofcode.lemonapp.ui.theme.LemonAppTheme
 
@@ -43,12 +44,17 @@ fun AppEntryPoint() {
             composable(route = "menu") {
                 MenuScreen(
                     onDayNightSwitchClick = inverseThemeColorMode,
-                    onNavigateToColorsScreen = { navController.navigate("menu/colors") }
+                    onNavigateToColorsScreen = { navController.navigate("menu/colors") },
+                    onNavigateToFontsScreen = { navController.navigate("menu/fonts") },
                 )
             }
 
             composable(route = "menu/colors") {
                 ColorsScreen(onDayNightSwitchClick = inverseThemeColorMode)
+            }
+
+            composable(route = "menu/fonts") {
+                FontsScreen(onDayNightSwitchClick = inverseThemeColorMode)
             }
         }
     }
