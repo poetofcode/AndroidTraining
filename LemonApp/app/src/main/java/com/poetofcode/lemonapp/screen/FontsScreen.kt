@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.poetofcode.lemonapp.LocalNightMode
 import com.poetofcode.lemonapp.NightMode
 import com.poetofcode.lemonapp.isNight
+import com.poetofcode.lemonapp.mock.MockData
 import com.poetofcode.lemonapp.ui.components.BorderedBox
 import com.poetofcode.lemonapp.ui.components.LemonSliderColors
 import com.poetofcode.lemonapp.ui.theme.AlmostBlack
@@ -33,7 +34,7 @@ private fun PreviewDay() {
 
 private val samples: List<@Composable () -> Unit> = listOf(
     { StyleVariantsSample() },
-    // { Text(text = "TODO") }
+    { Text(text = MockData.LOREM_IPSUM) }
 )
 
 @Composable
@@ -60,3 +61,5 @@ private fun StyleVariantsSample() {
 
     }
 }
+
+

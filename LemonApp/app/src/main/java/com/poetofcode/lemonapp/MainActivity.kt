@@ -31,6 +31,14 @@ class MainActivity : ComponentActivity() {
 enum class NightMode { DAY, NIGHT }
 val LocalNightMode = staticCompositionLocalOf { NightMode.DAY }
 
+enum class Screens(val path: String) {
+    MENU("menu"),
+    COLORS("menu/colors"),
+    FONTS("menu/fonts")
+}
+
+val START_SCREEN = Screens.FONTS
+
 @Composable
 fun AppEntryPoint() {
     val navController = rememberNavController()
@@ -40,20 +48,20 @@ fun AppEntryPoint() {
     val inverseThemeColorMode: () -> Unit = { currentNightMode.value = currentNightMode.value.inversed() }
 
     CompositionLocalProvider(LocalNightMode provides currentNightMode.value) {
-        NavHost(navController, startDestination = "menu") {
-            composable(route = "menu") {
+        NavHost(navController, startDestination = START_SCREEN.path) {
+            composable(route = Screens.MENU.path) {
                 MenuScreen(
                     onDayNightSwitchClick = inverseThemeColorMode,
-                    onNavigateToColorsScreen = { navController.navigate("menu/colors") },
-                    onNavigateToFontsScreen = { navController.navigate("menu/fonts") },
+                    onNavigateToColorsScreen = { navController.navigate(Screens.COLORS.path) },
+                    onNavigateToFontsScreen = { navController.navigate(Screens.FONTS.path) },
                 )
             }
 
-            composable(route = "menu/colors") {
+            composable(route = Screens.COLORS.path) {
                 ColorsScreen(onDayNightSwitchClick = inverseThemeColorMode)
             }
 
-            composable(route = "menu/fonts") {
+            composable(route = Screens.FONTS.path) {
                 FontsScreen(onDayNightSwitchClick = inverseThemeColorMode)
             }
         }
