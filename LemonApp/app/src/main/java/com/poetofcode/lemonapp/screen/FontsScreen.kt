@@ -31,7 +31,14 @@ private fun PreviewDay() {
 
 private val samples: List<@Composable () -> Unit> = listOf(
     { StyleVariantsSample() },
-    { Text(text = MockData.LOREM_IPSUM, style = ScreenState.currentTextStyle.value, fontSize = 18.sp) }
+    { SizeVariantsSample() },
+    {
+        Text(
+            text = MockData.LOREM_IPSUM,
+            style = ScreenState.currentTextStyle.value,
+            fontSize = ScreenState.currentTextSize.value.sp
+        )
+    }
 )
 
 @Composable
@@ -53,7 +60,6 @@ fun FontsScreen(onDayNightSwitchClick: () -> Unit = {}) {
 
 @Composable
 private fun StyleVariantsSample() {
-    val sliderPosition = remember { mutableStateOf(0.5f) }
     val buttonsState = remember {
         mutableStateOf(ButtonGroupState(titles = listOf("Serif", "Sans", "Mono"),
             activeIndex = 1)
@@ -64,19 +70,53 @@ private fun StyleVariantsSample() {
     val fontMono = MaterialTheme.typography.body1_mono
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(text = "Font style", style = MaterialTheme.typography.h5, modifier = Modifier.fillMaxWidth())
         ButtonGroup(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 6.dp),
             state = buttonsState,
             colors = ButtonGroupDefaults.colors(
                 activeContent = if (LocalNightMode.current.isNight) YellowMain else AlmostBlack,
                 inactiveContent = if (LocalNightMode.current.isNight) AlmostBlack else Color.White,
             ),
             onSelect = { selectedIndex ->
-                println("mylog ActiveIndex selected: $selectedIndex")
                 when (selectedIndex) {
                     0 -> ScreenState.currentTextStyle.value = fontSerif
                     1 -> ScreenState.currentTextStyle.value = fontSans
                     2 -> ScreenState.currentTextStyle.value = fontMono
+                }
+            }
+        )
+    }
+}
+
+@Composable
+private fun SizeVariantsSample() {
+    val buttonsState = remember {
+        mutableStateOf(ButtonGroupState(titles = listOf("12px", "16px", "18px", "20px", "24px"),
+            activeIndex = 0)
+        )
+    }
+
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(text = "Font size", style = MaterialTheme.typography.h5, modifier = Modifier.fillMaxWidth())
+        ButtonGroup(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 6.dp),
+            state = buttonsState,
+            colors = ButtonGroupDefaults.colors(
+                activeContent = if (LocalNightMode.current.isNight) YellowMain else AlmostBlack,
+                inactiveContent = if (LocalNightMode.current.isNight) AlmostBlack else Color.White,
+            ),
+            onSelect = { selectedIndex ->
+                when (selectedIndex) {
+                    /* 12 */ 0 -> ScreenState.currentTextSize.value = 12
+                    /* 16 */ 1 -> ScreenState.currentTextSize.value = 16
+                    /* 18 */ 2 -> ScreenState.currentTextSize.value = 18
+                    /* 20 */ 3 -> ScreenState.currentTextSize.value = 20
+                    /* 24 */ 4 -> ScreenState.currentTextSize.value = 24
                 }
             }
         )
@@ -88,4 +128,5 @@ private object ScreenState {
 
     val currentTextStyle: MutableState<TextStyle> = mutableStateOf(TextStyle())
 
+    val currentTextSize: MutableState<Int> = mutableStateOf(12)
 }
