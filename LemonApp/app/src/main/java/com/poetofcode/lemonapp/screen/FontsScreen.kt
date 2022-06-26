@@ -60,11 +60,6 @@ fun FontsScreen(onDayNightSwitchClick: () -> Unit = {}) {
 
 @Composable
 private fun StyleVariantsSample() {
-    val buttonsState = remember {
-        mutableStateOf(ButtonGroupState(titles = listOf("Serif", "Sans", "Mono"),
-            activeIndex = 1)
-        )
-    }
     val fontSerif = MaterialTheme.typography.body1_serif
     val fontSans = MaterialTheme.typography.body1_sans
     val fontMono = MaterialTheme.typography.body1_mono
@@ -75,7 +70,7 @@ private fun StyleVariantsSample() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 6.dp),
-            state = buttonsState,
+            state = ScreenState.styleButtonsState,
             colors = ButtonGroupDefaults.colors(
                 activeContent = if (LocalNightMode.current.isNight) YellowMain else AlmostBlack,
                 inactiveContent = if (LocalNightMode.current.isNight) AlmostBlack else Color.White,
@@ -93,19 +88,13 @@ private fun StyleVariantsSample() {
 
 @Composable
 private fun SizeVariantsSample() {
-    val buttonsState = remember {
-        mutableStateOf(ButtonGroupState(titles = listOf("12px", "16px", "18px", "20px", "24px"),
-            activeIndex = 0)
-        )
-    }
-
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = "Font size", style = MaterialTheme.typography.h5, modifier = Modifier.fillMaxWidth())
         ButtonGroup(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 6.dp),
-            state = buttonsState,
+            state = ScreenState.sizeButtonsState,
             colors = ButtonGroupDefaults.colors(
                 activeContent = if (LocalNightMode.current.isNight) YellowMain else AlmostBlack,
                 inactiveContent = if (LocalNightMode.current.isNight) AlmostBlack else Color.White,
@@ -125,6 +114,15 @@ private fun SizeVariantsSample() {
 
 
 private object ScreenState {
+    val sizeButtonsState = mutableStateOf(ButtonGroupState(
+        titles = listOf("12px", "16px", "18px", "20px", "24px"),
+        activeIndex = 0
+    ))
+
+    val styleButtonsState = mutableStateOf(ButtonGroupState(
+        titles = listOf("Serif", "Sans", "Mono"),
+        activeIndex = 1)
+    )
 
     val currentTextStyle: MutableState<TextStyle> = mutableStateOf(TextStyle())
 
