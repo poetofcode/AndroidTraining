@@ -1,17 +1,13 @@
 package com.example.selfupdatingstateapp
 
 data class TextField(
-    val updater: SelfReducer<TextField>,
+    val reducer: SelfReducer<TextField>,
     val id: Int,
     val text: String,
     val isEnabled: Boolean,
-) : SelfReducer<TextField> {
-    override fun reduceSelf(cb: TextField.() -> TextField) = updater.reduceSelf(cb)
-}
+) : SelfReducer<TextField> by reducer
 
 data class UiState(
-    val updater: SelfReducer<UiState>,
+    val reducer: SelfReducer<UiState>,
     val fields: List<TextField>
-) : SelfReducer<UiState> {
-    override fun reduceSelf(cb: UiState.() -> UiState) = updater.reduceSelf(cb)
-}
+) : SelfReducer<UiState> by reducer

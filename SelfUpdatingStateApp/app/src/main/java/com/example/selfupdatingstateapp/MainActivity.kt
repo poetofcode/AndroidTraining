@@ -7,36 +7,34 @@ import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
 
-    private val uiStateUpdater: SelfReducer<UiState> = object : SelfReducer<UiState> {
+    private val uiStateReducer: SelfReducer<UiState> = object : SelfReducer<UiState> {
         override fun reduceSelf(cb: UiState.() -> UiState) {
             uiState = uiState.cb()
         }
     }
 
-    class TextFieldUpdater(
+    class TextFieldReducer(
         private val id: Int,
-        private val uiStateUpdater: SelfReducer<UiState>
+        private val parentReducer: SelfReducer<UiState>
     ) : SelfReducer<TextField> {
-        override fun reduceSelf(cb: TextField.() -> TextField) = uiStateUpdater.reduceSelf {
+        override fun reduceSelf(cb: TextField.() -> TextField) = parentReducer.reduceSelf {
             copy(
-                fields = fields.map { field ->
-                    if (field.id == id) field.cb() else field
-                }
+                fields = fields.map { if (it.id == id) it.cb() else it }
             )
         }
     }
 
     private var uiState = UiState(
-        updater = uiStateUpdater,
+        reducer = uiStateReducer,
         fields = listOf(
             TextField(
-                updater = TextFieldUpdater(0, uiStateUpdater),
+                reducer = TextFieldReducer(0, uiStateReducer),
                 id = 0,
                 text = "Ivan Petrov",
                 isEnabled = false
             ),
             TextField(
-                updater = TextFieldUpdater(1, uiStateUpdater),
+                reducer = TextFieldReducer(1, uiStateReducer),
                 id = 1,
                 text = "Nikolay Drozdov",
                 isEnabled = false
