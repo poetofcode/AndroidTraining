@@ -1,17 +1,14 @@
 package com.example.composeexample02.calendar
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 
 @Composable
 fun SwipeCalendar(
     modifier: Modifier = Modifier,
     state: CalendarState = CalendarState.DEFAULT,
-    dataProvider: CalendarProvider = MockCalendarProvider(),
+    dataProvider: CalendarProvider = CalendarProviderImpl(),
     content: SwipeCalendarScope.() -> Unit)
 {
     val scope = SwipeCalendarScopeImpl(
@@ -25,6 +22,7 @@ fun SwipeCalendar(
     }
 }
 
+@Stable
 class CalendarState {
 
     var selectedMonth: Int by mutableStateOf(0)
