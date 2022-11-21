@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
@@ -33,7 +35,7 @@ class SwipeCalendarFragment : Fragment() {
 
             Spacer(modifier = Modifier.size(50.dp))
 
-            SwipeCalendar(modifier = Modifier.padding(horizontal = 24.dp)) {
+            SwipeCalendar(modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp)) {
                 item {
                     Text(text = "Август")
                 }
@@ -67,8 +69,26 @@ class SwipeCalendarScopeImpl(
     }
 
     override fun days(content: @Composable ColumnScope.() -> Unit) {
-        children += content
+        children += {
+            repeat(5) { rowIdx ->
+                Row {
+                    repeat(7) { colIdx ->
+                        MockDay(text = "${colIdx + (rowIdx * colIdx)}")
+                    }
+                }
+            }
+        }
+
+        // children += content
     }
+}
+
+
+@Composable
+private fun MockDay(text: String) {
+    Text(text = text, modifier = Modifier
+        .size(20.dp)
+        .border(width = 1.dp, color = Color.Blue))
 }
 
 interface SwipeCalendarScope {
