@@ -24,19 +24,39 @@ fun SwipeCalendar(
 }
 
 @Stable
-class CalendarState(startYear: Int = -1, startMonth: Int = -1, startDay: Int = -1) {
+class CalendarState(startYear: Int = -1, startMonth: Int = -1, startDate: Date? = Date()) {
 
-    var selectedMonth: Int by mutableStateOf(0)
+    var selectedMonth: Int by mutableStateOf(startMonth)
         private set
 
-    var selectedYear: Int by mutableStateOf(-1)
+    var selectedYear: Int by mutableStateOf(startYear)
+        private set
+
+    var selectedDate: Date? by mutableStateOf(startDate)
         private set
 
     init {
-        selectMonth(startMonth, startYear)
+        if (startDate == null) {
+            swipeToMonth(startMonth, startYear)
+        } else {
+            selectDate(startDate)
+        }
     }
 
-    fun selectMonth(monthIndex: Int, year: Int) {
+    fun selectDate(date: Date) {
+        val cal = Calendar.getInstance().apply { time = date }
+        val year = cal[Calendar.YEAR]
+        val month = cal[Calendar.MONTH]
+        val day = cal[Calendar.DAY_OF_MONTH]
+        swipeToMonth(month, year)
+        selectedDate = date
+    }
+
+    fun unselectDate() {
+        selectedDate = null
+    }
+
+    fun swipeToMonth(monthIndex: Int, year: Int) {
         val cal = Calendar.getInstance().apply {
             if (year > 0) set(Calendar.YEAR, year)
             if (monthIndex > 0) set(Calendar.MONTH, monthIndex)
@@ -45,7 +65,7 @@ class CalendarState(startYear: Int = -1, startMonth: Int = -1, startDay: Int = -
         this.selectedYear = cal.get(Calendar.YEAR)
     }
 
-    fun selectNextMonth() {
+    fun swipeToNextMonth() {
         if (selectedMonth + 1 > 11) {
             // TODO increment year
             this.selectedMonth = 0
@@ -54,7 +74,7 @@ class CalendarState(startYear: Int = -1, startMonth: Int = -1, startDay: Int = -
         this.selectedMonth += 1
     }
 
-    fun selectPrevMonth() {
+    fun swipeToPrevMonth() {
         if (selectedMonth - 1 < 0) {
             // TODO decrease year
             this.selectedMonth = 11

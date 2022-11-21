@@ -57,13 +57,13 @@ class SwipeCalendarFragment : Fragment() {
                 item {
                     Row(Modifier.fillMaxWidth()) {
                         Text(text = "<", modifier = Modifier.clickable {
-                            calendarState.selectPrevMonth()
+                            calendarState.swipeToPrevMonth()
                         })
                         Box(Modifier.weight(1f)) {
                             Text(text = monthNameByIndex(calendarState.selectedMonth), modifier = Modifier.align(Alignment.Center))
                         }
                         Text(text = ">", modifier = Modifier.clickable {
-                            calendarState.selectNextMonth()
+                            calendarState.swipeToNextMonth()
                         })
                     }
                 }

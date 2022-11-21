@@ -36,7 +36,12 @@ class CalendarProviderImpl: CalendarProvider {
             isCurrentMonth = false
             title = ""
         }
-        return CalendarDay(title = title, isCurrentMonth = isCurrentMonth)
+        return CalendarDay(
+            title = title,
+            isCurrentMonth = isCurrentMonth,
+            selected = false,
+            date = if (isCurrentMonth) Date(year, monthIndex, day, 0, 0) else null
+        )
     }
 
     private fun getWeekIndexOfMonthStart(monthIndex: Int, year: Int): Int {
@@ -65,4 +70,6 @@ class CalendarProviderImpl: CalendarProvider {
 data class CalendarDay(
     val title: String,
     val isCurrentMonth: Boolean,
+    val selected: Boolean,
+    val date: Date? = null
 )
