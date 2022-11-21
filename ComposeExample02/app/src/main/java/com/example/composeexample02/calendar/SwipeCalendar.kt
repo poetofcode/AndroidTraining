@@ -3,6 +3,7 @@ package com.example.composeexample02.calendar
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import java.util.*
 
 @Composable
 fun SwipeCalendar(
@@ -23,7 +24,7 @@ fun SwipeCalendar(
 }
 
 @Stable
-class CalendarState {
+class CalendarState(startYear: Int = -1, startMonth: Int = -1, startDay: Int = -1) {
 
     var selectedMonth: Int by mutableStateOf(0)
         private set
@@ -31,9 +32,17 @@ class CalendarState {
     var selectedYear: Int by mutableStateOf(-1)
         private set
 
-    fun selectMonth(monthIndex: Int = 0, year: Int = -1) {
-        this.selectedMonth = monthIndex
-        this.selectedYear = year
+    init {
+        selectMonth(startMonth, startYear)
+    }
+
+    fun selectMonth(monthIndex: Int, year: Int) {
+        val cal = Calendar.getInstance().apply {
+            if (year > 0) set(Calendar.YEAR, year)
+            if (monthIndex > 0) set(Calendar.MONTH, monthIndex)
+        }
+        this.selectedMonth = cal.get(Calendar.MONTH)
+        this.selectedYear = cal.get(Calendar.YEAR)
     }
 
     fun selectNextMonth() {

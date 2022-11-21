@@ -83,7 +83,6 @@ class SwipeCalendarFragment : Fragment() {
                             Text(
                                 text = it.title,
                                 modifier = Modifier.align(Alignment.Center),
-                                color = if (it.isCurrentMonth) Color.Black else Color.LightGray
                             )
                         }
                     }
