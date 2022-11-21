@@ -79,6 +79,9 @@ class SwipeCalendarFragment : Fragment() {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(30.dp)
+                                .clickable {
+                                    calendarState.selectDate(it.date ?: return@clickable)
+                                }
                                 .border(width = 1.dp, Color.Cyan)
                                 .background(if (it.selected) Color.Yellow else Color.Transparent)
                         ) {
