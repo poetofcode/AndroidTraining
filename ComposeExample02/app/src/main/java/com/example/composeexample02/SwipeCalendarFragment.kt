@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -35,8 +33,8 @@ class SwipeCalendarFragment : Fragment() {
 
             Spacer(modifier = Modifier.size(50.dp))
 
-            SwipeCalendar {
-                header {
+            SwipeCalendar(modifier = Modifier.padding(horizontal = 24.dp)) {
+                item {
                     Text(text = "Август")
                 }
 
@@ -55,27 +53,28 @@ fun SwipeCalendar(modifier: Modifier = Modifier, content: SwipeCalendarScope.() 
     val scope = SwipeCalendarScopeImpl().apply(content)
 
     Column(modifier = modifier) {
-        scope.children.forEach { it.invoke() }
+        val that = this
+        scope.children.forEach { it.invoke(that) }
     }
 }
 
 class SwipeCalendarScopeImpl(
-    val children: MutableList<@Composable () -> Unit> = mutableListOf()
+    val children: MutableList<@Composable ColumnScope.() -> Unit> = mutableListOf()
 ) : SwipeCalendarScope {
 
-    override fun header(content: @Composable () -> Unit) {
+    override fun item(content: @Composable ColumnScope.() -> Unit) {
         children += content
     }
 
-    override fun days(content: @Composable () -> Unit) {
+    override fun days(content: @Composable ColumnScope.() -> Unit) {
         children += content
     }
 }
 
 interface SwipeCalendarScope {
 
-    fun header(content: @Composable () -> Unit)
+    fun item(content: @Composable ColumnScope.() -> Unit)
 
-    fun days(content: @Composable () -> Unit)
+    fun days(content: @Composable ColumnScope.() -> Unit)
 
 }
