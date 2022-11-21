@@ -23,18 +23,20 @@ class CalendarProviderImpl: CalendarProvider {
     }
 
     override fun getDay(rowIndex: Int, columnIndex: Int, monthIndex: Int, year: Int): CalendarDay {
-        var clickable = true
-        var day = 0
+        var isCurrentMonth = true
+        var title = ""
 
         val weekIndexOfStart = getWeekIndexOfMonthStart(monthIndex, year)
         val allDaysCount = allDaysCount(monthIndex, year)
 
-        day = (columnIndex - weekIndexOfStart) + (rowIndex * getColumnCount(monthIndex, year)) + 1
+        val day = (columnIndex - weekIndexOfStart) + (rowIndex * getColumnCount(monthIndex, year)) + 1
+        title = day.toString()
 
         if (day < 1 || day > allDaysCount) {
-            clickable = false
+            isCurrentMonth = false
+            title = ""
         }
-        return CalendarDay(title = day.toString(), clickable = clickable)
+        return CalendarDay(title = title, isCurrentMonth = isCurrentMonth)
     }
 
     private fun getWeekIndexOfMonthStart(monthIndex: Int, year: Int): Int {
@@ -62,5 +64,5 @@ class CalendarProviderImpl: CalendarProvider {
 
 data class CalendarDay(
     val title: String,
-    val clickable: Boolean,
+    val isCurrentMonth: Boolean,
 )

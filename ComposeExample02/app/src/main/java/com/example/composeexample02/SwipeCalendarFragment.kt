@@ -73,17 +73,19 @@ class SwipeCalendarFragment : Fragment() {
                 }
 
                 days {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(30.dp)
-                            .border(width = 1.dp, Color.Cyan)
-                    ) {
-                        Text(
-                            text = it.title,
-                            modifier = Modifier.align(Alignment.Center),
-                            color = if (it.clickable) Color.Black else Color.LightGray
-                        )
+                    if (it.isCurrentMonth) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(30.dp)
+                                .border(width = 1.dp, Color.Cyan)
+                        ) {
+                            Text(
+                                text = it.title,
+                                modifier = Modifier.align(Alignment.Center),
+                                color = if (it.isCurrentMonth) Color.Black else Color.LightGray
+                            )
+                        }
                     }
                 }
             }
