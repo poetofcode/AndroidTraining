@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
+import com.example.composeexample02.calendar.SwipeCalendar
 
 class SwipeCalendarFragment : Fragment() {
 
@@ -47,54 +48,4 @@ class SwipeCalendarFragment : Fragment() {
 
         }
     }
-}
-
-
-@Composable
-fun SwipeCalendar(modifier: Modifier = Modifier, content: SwipeCalendarScope.() -> Unit) {
-    val scope = SwipeCalendarScopeImpl().apply(content)
-
-    Column(modifier = modifier) {
-        val that = this
-        scope.children.forEach { it.invoke(that) }
-    }
-}
-
-class SwipeCalendarScopeImpl(
-    val children: MutableList<@Composable ColumnScope.() -> Unit> = mutableListOf()
-) : SwipeCalendarScope {
-
-    override fun item(content: @Composable ColumnScope.() -> Unit) {
-        children += content
-    }
-
-    override fun days(content: @Composable ColumnScope.() -> Unit) {
-        children += {
-            repeat(5) { rowIdx ->
-                Row {
-                    repeat(7) { colIdx ->
-                        MockDay(text = "${colIdx + (rowIdx * colIdx)}")
-                    }
-                }
-            }
-        }
-
-        // children += content
-    }
-}
-
-
-@Composable
-private fun MockDay(text: String) {
-    Text(text = text, modifier = Modifier
-        .size(20.dp)
-        .border(width = 1.dp, color = Color.Blue))
-}
-
-interface SwipeCalendarScope {
-
-    fun item(content: @Composable ColumnScope.() -> Unit)
-
-    fun days(content: @Composable ColumnScope.() -> Unit)
-
 }
