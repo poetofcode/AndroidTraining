@@ -45,55 +45,69 @@ class SwipeCalendarFragment : Fragment() {
 
             Spacer(modifier = Modifier.size(50.dp))
 
+            // Calendar 1
             val calendarState by remember {
                 mutableStateOf(CalendarState.DEFAULT)
             }
+            Calendar(calendarState = calendarState)
 
-            SwipeCalendar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
-                state = calendarState,
-            ) {
-                item {
-                    Row(Modifier.fillMaxWidth()) {
-                        Text(text = "<", modifier = Modifier.clickable {
-                            calendarState.swipeToPrevMonth()
-                        })
-                        Box(Modifier.weight(1f)) {
-                            Text(text = monthNameByIndex(calendarState.selectedMonth), modifier = Modifier.align(Alignment.Center))
-                        }
-                        Text(text = ">", modifier = Modifier.clickable {
-                            calendarState.swipeToNextMonth()
-                        })
+            Spacer(modifier = Modifier.size(50.dp))
+
+            // Calendar 2
+            val calendarState2 by remember {
+                mutableStateOf(CalendarState(
+                    startDate = createDate(2022, 11, 31)
+                ))
+            }
+            Calendar(calendarState = calendarState2)
+        }
+    }
+
+    @Composable
+    private fun Calendar(calendarState: CalendarState) {
+        SwipeCalendar(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
+            state = calendarState,
+        ) {
+            item {
+                Row(Modifier.fillMaxWidth()) {
+                    Text(text = "<", modifier = Modifier.clickable {
+                        calendarState.swipeToPrevMonth()
+                    })
+                    Box(Modifier.weight(1f)) {
+                        Text(text = monthNameByIndex(calendarState.selectedMonth), modifier = Modifier.align(Alignment.Center))
                     }
-                }
-
-                item {
-                    Spacer(modifier = Modifier.size(30.dp))
-                }
-
-                days {
-                    if (it.isCurrentMonth) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(30.dp)
-                                .clickable {
-                                    calendarState.selectDate(it.date ?: return@clickable)
-                                }
-                                .border(width = 1.dp, Color.Cyan)
-                                .background(if (it.selected) Color.Yellow else Color.Transparent)
-                        ) {
-                            Text(
-                                text = it.title,
-                                modifier = Modifier.align(Alignment.Center),
-                            )
-                        }
-                    }
+                    Text(text = ">", modifier = Modifier.clickable {
+                        calendarState.swipeToNextMonth()
+                    })
                 }
             }
 
+            item {
+                Spacer(modifier = Modifier.size(30.dp))
+            }
+
+            days {
+                if (it.isCurrentMonth) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(30.dp)
+                            .clickable {
+                                calendarState.selectDate(it.date ?: return@clickable)
+                            }
+                            .border(width = 1.dp, Color.Cyan)
+                            .background(if (it.selected) Color.Yellow else Color.Transparent)
+                    ) {
+                        Text(
+                            text = it.title,
+                            modifier = Modifier.align(Alignment.Center),
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -102,5 +116,14 @@ class SwipeCalendarFragment : Fragment() {
             set(Calendar.MONTH, selectedMonth)
         }
         return SimpleDateFormat("MMMM", Locale.getDefault()).format(cal.time)
+    }
+
+    private fun createDate(year: Int, month: Int, day: Int) : Date {
+        val cal = Calendar.getInstance().apply {
+            set(Calendar.YEAR, year)
+            set(Calendar.MONTH, month)
+            set(Calendar.DAY_OF_MONTH, day)
+        }
+        return cal.time
     }
 }
