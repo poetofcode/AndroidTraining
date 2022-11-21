@@ -34,7 +34,7 @@ class SwipeCalendarScopeImpl(
                 Row(modifier = Modifier.fillMaxWidth()) {
                     repeat(dataProvider.getColumnCount(selectedMonth)) { columnIndex ->
                         Box(modifier = Modifier.weight(1f)) {
-                            content(dataProvider.getDay(rowIndex, columnIndex))
+                            content(dataProvider.getDay(rowIndex, columnIndex, selectedMonth))
                         }
                     }
                 }

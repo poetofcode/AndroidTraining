@@ -6,7 +6,7 @@ interface CalendarProvider {
 
     fun getColumnCount(monthIndex: Int): Int
 
-    fun getDay(rowIndex: Int, columnIndex: Int): CalendarDay
+    fun getDay(rowIndex: Int, columnIndex: Int, monthIndex: Int): CalendarDay
 
 }
 
@@ -19,10 +19,14 @@ class MockCalendarProvider : CalendarProvider {
         return 7
     }
 
-    override fun getDay(rowIndex: Int, columnIndex: Int): CalendarDay {
-        var titleNumber = columnIndex + (rowIndex * columnIndex) + 1
-        if (titleNumber > 31) titleNumber -= - 30
-        return CalendarDay(title = titleNumber.toString(), clickable = true)
+    override fun getDay(rowIndex: Int, columnIndex: Int, monthIndex: Int): CalendarDay {
+        var titleNumber = columnIndex + (rowIndex * getColumnCount(monthIndex)) + 1
+        var clickable = true
+        if (titleNumber > 31) {
+            titleNumber -= 31
+            clickable = false
+        }
+        return CalendarDay(title = titleNumber.toString(), clickable = clickable)
     }
 }
 
