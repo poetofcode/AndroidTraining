@@ -2,6 +2,9 @@ package com.example.composeexample02.calendar
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 
 @Composable
@@ -23,15 +26,34 @@ fun SwipeCalendar(
 }
 
 class CalendarState {
-    var selectedMonth: Int = 0
+
+    var selectedMonth: Int by mutableStateOf(0)
         private set
 
-    var selectedYear: Int = -1
+    var selectedYear: Int by mutableStateOf(-1)
         private set
 
     fun selectMonth(monthIndex: Int = 0, year: Int = -1) {
         this.selectedMonth = monthIndex
         this.selectedYear = year
+    }
+
+    fun selectNextMonth() {
+        if (selectedMonth + 1 > 11) {
+            // TODO increment year
+            this.selectedMonth = 0
+            return
+        }
+        this.selectedMonth += 1
+    }
+
+    fun selectPrevMonth() {
+        if (selectedMonth - 1 < 0) {
+            // TODO decrease year
+            this.selectedMonth = 11
+            return
+        }
+        this.selectedMonth -= 1
     }
 
     companion object {

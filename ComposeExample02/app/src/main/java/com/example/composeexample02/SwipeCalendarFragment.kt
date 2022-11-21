@@ -5,17 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.VectorPainter
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
@@ -45,7 +44,7 @@ class SwipeCalendarFragment : Fragment() {
 
             Spacer(modifier = Modifier.size(50.dp))
 
-            val calendarState = remember {
+            val calendarState by remember {
                 mutableStateOf(CalendarState.DEFAULT)
             }
 
@@ -53,15 +52,19 @@ class SwipeCalendarFragment : Fragment() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp),
-                state = calendarState.value,
+                state = calendarState,
             ) {
                 item {
                     Row(Modifier.fillMaxWidth()) {
-                        Text(text = "<")
+                        Text(text = "<", modifier = Modifier.clickable {
+                            calendarState.selectPrevMonth()
+                        })
                         Box(Modifier.weight(1f)) {
-                            Text(text = monthNameByIndex(calendarState.value.selectedMonth), modifier = Modifier.align(Alignment.Center))
+                            Text(text = monthNameByIndex(calendarState.selectedMonth), modifier = Modifier.align(Alignment.Center))
                         }
-                        Text(text = ">")
+                        Text(text = ">", modifier = Modifier.clickable {
+                            calendarState.selectNextMonth()
+                        })
                     }
                 }
 
