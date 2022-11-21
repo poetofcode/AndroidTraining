@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_graph"
-    app:startDestination="@id/commandFragment">
+    app:startDestination="@id/swipeCalendarFragment">
 
     <fragment
         android:id="@+id/splashFragment"
@@ -48,5 +48,9 @@
         android:id="@+id/commandFragment"
         android:name="com.example.composeexample02.CommandFragment"
         android:label="CommandFragment" />
+    <fragment
+        android:id="@+id/swipeCalendarFragment"
+        android:name="com.example.composeexample02.SwipeCalendarFragment"
+        android:label="SwipeCalendarFragment" />
 
 </navigation>
