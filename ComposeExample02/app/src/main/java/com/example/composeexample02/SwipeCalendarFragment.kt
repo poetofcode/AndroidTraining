@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -79,6 +80,7 @@ class SwipeCalendarFragment : Fragment() {
                                 .fillMaxWidth()
                                 .height(30.dp)
                                 .border(width = 1.dp, Color.Cyan)
+                                .background(if (it.selected) Color.Yellow else Color.Transparent)
                         ) {
                             Text(
                                 text = it.title,

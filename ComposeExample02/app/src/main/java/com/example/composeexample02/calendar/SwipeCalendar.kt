@@ -47,9 +47,8 @@ class CalendarState(startYear: Int = -1, startMonth: Int = -1, startDate: Date? 
         val cal = Calendar.getInstance().apply { time = date }
         val year = cal[Calendar.YEAR]
         val month = cal[Calendar.MONTH]
-        val day = cal[Calendar.DAY_OF_MONTH]
         swipeToMonth(month, year)
-        selectedDate = date
+        selectedDate = cal.time
     }
 
     fun unselectDate() {
@@ -106,18 +105,31 @@ class SwipeCalendarScopeImpl(
                 Row(modifier = Modifier.fillMaxWidth()) {
                     repeat(dataProvider.getColumnCount(selectedMonth, selectedYear)) { columnIndex ->
                         Box(modifier = Modifier.weight(1f)) {
-                            content(dataProvider.getDay(
+                            val day = dataProvider.getDay(
                                 rowIndex,
                                 columnIndex,
                                 selectedMonth,
                                 selectedYear
-                            ))
+                            )
+                            content(day.copy(selected = isDateEquals(day.date, state.selectedDate)))
                         }
                     }
                 }
             }
         }
     }
+}
+
+private fun isDateEquals(first: Date?, second: Date?) : Boolean {
+    println("mylog isDateEquals: $first, $second")
+    if (first == null || second == null) {
+        return false
+    }
+    val firstCal = Calendar.getInstance().apply { time = first }
+    val secondCal = Calendar.getInstance().apply { time = second }
+    return firstCal[Calendar.YEAR] == secondCal[Calendar.YEAR]
+            && firstCal[Calendar.MONTH] == secondCal[Calendar.MONTH]
+            && firstCal[Calendar.DAY_OF_MONTH] == secondCal[Calendar.DAY_OF_MONTH]
 }
 
 interface SwipeCalendarScope {
