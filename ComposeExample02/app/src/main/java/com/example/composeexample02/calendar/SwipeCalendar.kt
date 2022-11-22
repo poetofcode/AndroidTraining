@@ -121,7 +121,6 @@ class SwipeCalendarScopeImpl(
 }
 
 private fun isDateEquals(first: Date?, second: Date?) : Boolean {
-    println("mylog isDateEquals: $first, $second")
     if (first == null || second == null) {
         return false
     }
