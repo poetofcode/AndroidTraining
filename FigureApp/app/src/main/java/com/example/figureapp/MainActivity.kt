@@ -44,21 +44,27 @@ class MainActivity : ComponentActivity() {
 
                     Spacer(modifier = Modifier.size(50.dp))
 
-                    Figures(isQuad = isQuad.value)
+                    Figures(getFactory(isQuad = isQuad.value))
                 }
             }
         }
     }
+
+    private fun getFactory(isQuad: Boolean): FigureFactory {
+        return if (isQuad) RectangleFactory() else CircleFactory()
+    }
+
+
 }
 
 @Composable
-fun Figures(isQuad: Boolean) {
+fun Figures(figureFactory: FigureFactory) {
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(start = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(20.dp)) {
         listOf(Color.Blue, Color.Yellow, Color.Green).forEach {
-            Circle().Draw(color = it)
+            figureFactory.createFigure().Draw(color = it)
         }
     }
 }
