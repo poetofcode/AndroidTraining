@@ -88,3 +88,21 @@ class Circle : Figure() {
             .background(color = color, shape = CircleShape))
     }
 }
+
+// ========================== FACTORY
+
+interface FigureFactory {
+    fun createFigure() : Figure
+}
+
+class RectangleFactory : FigureFactory {
+    override fun createFigure() : Figure {
+        return Rectangle()
+    }
+}
+
+class CircleFactory : FigureFactory {
+    override fun createFigure(): Figure {
+        return Circle()
+    }
+}
