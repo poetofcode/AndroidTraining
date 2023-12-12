@@ -5,12 +5,21 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.lukelorusso.codeedittext.CodeEditText
 
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        findViewById<CodeEditText>(R.id.cetMyCode).setOnCodeChangedListener { (code, completed) ->
+            // the code has changed
+            if (completed) {
+                // the code has been fully entered (code.length == maxLength)
+                println("mylog OnFilled code = ${code}")
+            }
+        }
 
 //        val areas = listOf(R.id.tvArea1, R.id.tvArea2, R.id.tvArea3, R.id.tvArea4).map {
 //            findViewById<TextView>(it)
