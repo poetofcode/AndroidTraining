@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+<!--    <com.google.android.material.textfield.TextInputEditText-->
+<!--        android:id="@+id/etCode"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:foreground="#fff"-->
+<!--        android:visibility="gone" />-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:visibility="gone">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/tvArea1"-->
+<!--            android:layout_width="60dp"-->
+<!--            android:layout_height="80dp"-->
+<!--            android:background="#00f"-->
+<!--            android:gravity="center"-->
+<!--            android:text="1"-->
+<!--            android:textColor="#fff"-->
+<!--            android:textSize="30sp"-->
+<!--            android:layout_marginHorizontal="10dp"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/tvArea2"-->
+<!--            android:layout_width="60dp"-->
+<!--            android:layout_height="80dp"-->
+<!--            android:background="#00f"-->
+<!--            android:gravity="center"-->
+<!--            android:text="2"-->
+<!--            android:textColor="#fff"-->
+<!--            android:textSize="30sp"-->
+<!--            android:layout_marginHorizontal="10dp"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/tvArea3"-->
+<!--            android:layout_width="60dp"-->
+<!--            android:layout_height="80dp"-->
+<!--            android:background="#00f"-->
+<!--            android:gravity="center"-->
+<!--            android:text="3"-->
+<!--            android:textColor="#fff"-->
+<!--            android:textSize="30sp"-->
+<!--            android:layout_marginHorizontal="10dp"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/tvArea4"-->
+<!--            android:layout_width="60dp"-->
+<!--            android:layout_height="80dp"-->
+<!--            android:background="#00f"-->
+<!--            android:gravity="center"-->
+<!--            android:text="5"-->
+<!--            android:textColor="#fff"-->
+<!--            android:textSize="30sp"-->
+<!--            android:layout_marginHorizontal="10dp"/>-->
+
+<!--    </LinearLayout>-->
+
+    <com.lukelorusso.codeedittext.CodeEditText
+        android:id="@+id/cetMyCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+</FrameLayout>
