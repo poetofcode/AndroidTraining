@@ -1,22 +1,24 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.github.ben-manes.versions'
 
 group='com.github.lukelorusso'
 
 android {
-    compileSdkVersion androidTargetSdkVersion
+    compileSdkVersion 34
 
     buildFeatures {
         viewBinding true
     }
 
+    if (getGradle().getGradleVersion().substring(0, 1).toInteger() >= 8) {
+        namespace "com.codeedittext.plugin"
+    }
+    compileSdkVersion project.hasProperty('compileSdkVersion') ? rootProject.ext.compileSdkVersion : 29
     defaultConfig {
-        minSdkVersion androidMinSdkVersion
-        targetSdkVersion androidTargetSdkVersion
-        versionCode androidVersionCode
-        versionName androidVersionName
+        minSdkVersion 24
+        targetSdkVersion 34
+        versionCode 1
+        versionName "1.0"
     }
 
     buildTypes {
@@ -33,5 +35,7 @@ android {
 }
 
 dependencies {
-    implementation kotlinStdlib
+    // implementation kotlinStdlib
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.0"
 }
