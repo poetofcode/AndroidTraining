@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -66,6 +66,25 @@
 
 <!--    </LinearLayout>-->
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Test field"
+        android:theme="@style/TextInputLayoutCustom">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:singleLine="true"
+            tools:text="example@example.com"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:textColor="#00f" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
     <com.lukelorusso.codeedittext.CodeEditText
         android:id="@+id/cetMyCode"
         android:layout_width="wrap_content"
@@ -73,4 +92,4 @@
         android:layout_gravity="center"
         android:maxLength="6" />
 
-</FrameLayout>
+</LinearLayout>
