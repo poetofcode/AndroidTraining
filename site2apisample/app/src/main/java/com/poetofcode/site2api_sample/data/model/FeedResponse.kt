@@ -1,12 +1,13 @@
 package com.poetofcode.site2api_sample.data.model
 
 data class FeedResponse(
-    val posts: List<Post>
+    var result: String? = null,
+    var posts: List<Post>? = null
 ) {
     data class Post(
-        val title: String,
-        val image: String,
-        val link: String,
-        val commentsCount: String
+        var title: String? = null,
+        var image: String? = null,
+        var link: String? = null,
+        var commentsCount: String? = null
     )
 }

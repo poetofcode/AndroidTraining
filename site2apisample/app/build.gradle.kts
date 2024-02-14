@@ -56,6 +56,7 @@ dependencies {
 
     implementation("com.squareup.retrofit2:retrofit:${Versions.RETROFIT_VER}")
     implementation("com.squareup.retrofit2:converter-gson:${Versions.RETROFIT_VER}")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
     //ktx android
     implementation("androidx.fragment:fragment-ktx:1.6.2")

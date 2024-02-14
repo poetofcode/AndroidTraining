@@ -8,12 +8,13 @@ import java.util.Properties
 
 class MainActivity : AppCompatActivity() {
 
-    val viewModel by viewModels<MainViewModel>()
+    val vm by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        println("mylog BaseUrl: ${resources.getString(R.string.backendBaseUrl)}")
+        vm.initAPI(resources.getString(R.string.backendBaseUrl))
+        vm.loadFeed()
     }
 }
