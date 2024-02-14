@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -7,12 +9,18 @@ android {
     namespace = "com.poetofcode.site2api_sample"
     compileSdk = 34
 
+    val properties = Properties()
+    properties.load(project.rootProject.file("local.properties").inputStream())
+    val backendBaseUrl = properties.getProperty("backendBaseUrl")
+
     defaultConfig {
         applicationId = "com.poetofcode.site2api_sample"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
+        resValue("string", "backendBaseUrl", backendBaseUrl)
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
