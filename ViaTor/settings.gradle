@@ -1,0 +1,4 @@
+rootProject.name = "ViaTor"
+include ':app'
+include ':jtorctl'
+include ':tor-android-binary'

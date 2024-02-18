@@ -1,0 +1,51 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion '29.0.2'
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = [
+                    'src/main/libs'
+            ]
+            java.srcDirs = ['src']
+        }
+    }
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 29
+        versionCode 42700
+        versionName "0.4.2.7"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.so'])
+}
+
+apply plugin: 'maven'
+
+/*
+uploadArchives {
+        repositories.mavenDeployer {
+                def deployPath = file(getProperty('aar.deployPath'))
+                repository(url: "file://${deployPath.absolutePath}")
+                pom.project {
+                        groupId 'org.torproject'
+                        artifactId 'tor-android-binary'
+                        version "0.4.3.6"
+                }
+        }
+}
+ */
+

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextInputLayoutCustom">
+        <item name="colorError">#f00</item>
+        <item name="colorPrimary">#0f0</item>
+        <item name="colorOnSurface">#00f</item>
+    </style>
+
+</resources>

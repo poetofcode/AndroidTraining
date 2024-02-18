@@ -1,16 +1,45 @@
 package ru.poetofcode.rx_samples;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observables.ConnectableObservable;
 
 public class Launcher {
 
+    private static int currentSample = 1;
+
+    private static ObservableEmitter<String> convertedEmitter;
+
     public static void main(String[] args) {
 
-        // Observable<String> names = Observable.just("One", "Two", "Three");
+        sampleOne_Errors();
 
-        Observable<String> names =
+        sampleTwo_Creation();
 
-        Observable.create(emitter -> {
+        sampleThree_ProxyObservable();
+
+        sampleFour_DelayedObservable();
+
+        log("\nFINISH APP");
+    }
+
+    private static void log(String str) {
+        System.out.println(str);
+    }
+
+    private static void logSampleHeader() {
+        log("\n*********** #" + currentSample++ + " *************");
+    }
+
+    private static void sampleOne_Errors() {
+        logSampleHeader();
+
+        Observable<String> names = Observable.create(emitter -> {
             emitter.onNext("One");
             emitter.onNext("Two");
             emitter.onNext("Three");
@@ -28,8 +57,7 @@ public class Launcher {
             if (item instanceof String) {
                 return ((String) item).length();
             } else {
-                // return Observable.error(new Exception("Error in map"));
-                throw new Exception("kjkljlk");
+                throw new Exception("Error description");
             }
         });
 
@@ -40,27 +68,83 @@ public class Launcher {
         }, () -> {
             log("Completed !");
         });
-
-
-        /* Observable<Integer> lens = names.map(String::length); */
-
-//        names.blockingSubscribe(name -> {
-//            log("Name: " + name);
-//        }, e -> {
-//            log("Exception: " + e.toString());
-//        }, () -> {
-//            log("Completed!");
-//        });
-
-//        lens.blockingSubscribe(len -> {
-//            log("len: " + len);
-//        });
-
-        log("FINISH APP");
     }
 
-    private static void log(String str) {
-        System.out.println(str);
+    @SuppressWarnings("CheckResult")
+    private static void sampleTwo_Creation() {
+        logSampleHeader();
+
+        /*
+            Factory methods:
+
+            - create
+            - just
+            - fromIterable
+            - fromCallable (что это?)
+            - defer (что это?)
+            - range (??)
+            - interval
+            - ConnectableObservable
+         */
+
+        List<String> lines = Arrays.asList("One", "Two", "Three");
+
+        Observable.fromIterable(lines)
+                .subscribe(Launcher::log);
+
+        Observable.just("1", "2", "3")
+            .subscribe(Launcher::log);
+
+
+        Observable<String> helloWorld = Observable.fromIterable(
+                Arrays.asList("H", "e", "l", "l", "o", " ", "W", "o", "r", "l", "d")
+        );
+
+        ConnectableObservable<String> helloHot = helloWorld.publish();
+
+        helloHot.subscribe(System.out::print, e -> {}, () -> log(""));
+
+        helloHot.connect();
+    }
+
+    private static void sampleThree_ProxyObservable() {
+        logSampleHeader();
+
+        Observable<String> strings = Observable.just("Red", "Blue", "White");
+
+        convertObservable(strings).subscribe(Launcher::log).dispose();
+    }
+
+    private static Observable<String> convertObservable(Observable<String> source) {
+        Observable<String> res = Observable.create(emitter -> {
+            Launcher.convertedEmitter = emitter;
+
+            Disposable d = source.subscribe(str -> {
+                Launcher.convertedEmitter.onNext("converted-" + str);
+            }, Throwable::printStackTrace, () -> Launcher.convertedEmitter.onComplete());
+
+            emitter.setDisposable(d);
+        });
+
+        return res;
+    }
+
+    private static void sampleFour_DelayedObservable() {
+        logSampleHeader();
+
+        Observable<String> hello = Observable.just("H", "e", "l", "l", "o", "!");
+
+        hello.delay(1, TimeUnit.SECONDS)
+                .subscribe(Launcher::log);
+        sleep(6 * 1000);
+    }
+
+    private static void sleep(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }
