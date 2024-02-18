@@ -5,6 +5,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -28,11 +29,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.poetofcode.site2api_sample.data.model.FeedResponse
 import com.poetofcode.site2api_sample.ui.theme.Site2apisampleTheme
+import com.poetofcode.site2api_sample.utils.openLinkInBrowser
 
 class MainActivity : AppCompatActivity() {
 
@@ -92,12 +95,16 @@ class MainActivity : AppCompatActivity() {
 
     @Composable
     private fun Post(post: FeedResponse.Post) {
+        val context = LocalContext.current
         Column(
             modifier = Modifier
                 .padding(vertical = 5.dp)
                 .fillMaxWidth()
                 .background(color = Color(0xFFEAEAEA))
                 .padding(8.dp)
+                .clickable {
+                    context.openLinkInBrowser(post.link ?: return@clickable)
+                }
         ) {
             post.image?.let { imageUrl ->
                 AsyncImage(
