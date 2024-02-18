@@ -4,8 +4,8 @@ object ServiceProvider {
 
     lateinit var freshApiService: FreshApiService
 
-    fun buildService(baseUrl: String) {
-        freshApiService = RetrofitClient.getClient(baseUrl).create(FreshApiService::class.java)
+    fun buildService(baseUrl: String, apiKey: String) {
+        freshApiService = RetrofitClient.getClient(baseUrl, apiKey).create(FreshApiService::class.java)
     }
 
 }

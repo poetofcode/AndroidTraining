@@ -16,7 +16,7 @@ object RetrofitClient {
         return (path.toSha1() + token.toSha1() + salt.toSha1()).toSha1()
     }
 
-    fun getClient(baseUrl: String): Retrofit {
+    fun getClient(baseUrl: String, apiKey: String): Retrofit {
         if (retrofit == null) {
             val interceptor = HttpLoggingInterceptor()
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -27,7 +27,7 @@ object RetrofitClient {
                         return@Interceptor chain.proceed(request)
                     }
 
-                    val salt = "secret-api-key"
+                    val salt = apiKey
                     val newRequest = chain.request().newBuilder()
                         .addHeader("Authorization", "Bearer ${calculateToken(request.url.encodedPath, salt)}")
                         .build()

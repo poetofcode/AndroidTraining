@@ -16,9 +16,9 @@ class MainViewModel : ViewModel() {
 
     private lateinit var feedRepository: FeedRepository
 
-    fun initAPI(baseUrl: String) {
+    fun initAPI(baseUrl: String, apiKey: String) {
         // TODO move to App class
-        ServiceProvider.buildService(baseUrl)
+        ServiceProvider.buildService(baseUrl, apiKey)
         feedRepository = FeedRepository(ServiceProvider.freshApiService)
     }
 

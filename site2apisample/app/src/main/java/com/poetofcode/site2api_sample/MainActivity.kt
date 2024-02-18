@@ -8,13 +8,15 @@ import java.util.Properties
 
 class MainActivity : AppCompatActivity() {
 
-    val vm by viewModels<MainViewModel>()
+    private val vm by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        vm.initAPI(resources.getString(R.string.backendBaseUrl))
+        val baseUrl = resources.getString(R.string.backendBaseUrl)
+        val apiKey = resources.getString(R.string.apiKey)
+        vm.initAPI(baseUrl, apiKey)
         vm.loadFeed()
     }
 }

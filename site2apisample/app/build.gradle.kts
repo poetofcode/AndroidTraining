@@ -12,6 +12,7 @@ android {
     val properties = Properties()
     properties.load(project.rootProject.file("local.properties").inputStream())
     val backendBaseUrl = properties.getProperty("backendBaseUrl")
+    val apiKey = properties.getProperty("apiKey")
 
     defaultConfig {
         applicationId = "com.poetofcode.site2api_sample"
@@ -21,6 +22,7 @@ android {
         versionName = "1.0"
 
         resValue("string", "backendBaseUrl", backendBaseUrl)
+        resValue("string", "apiKey", apiKey)
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
