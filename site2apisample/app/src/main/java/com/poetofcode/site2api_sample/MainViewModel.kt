@@ -1,7 +1,11 @@
 package com.poetofcode.site2api_sample
 
 import androidx.lifecycle.ViewModel
+import com.poetofcode.site2api_sample.data.model.DataResponse
+import com.poetofcode.site2api_sample.data.model.ExceptionResponse
+import com.poetofcode.site2api_sample.data.model.FailureResponse
 import com.poetofcode.site2api_sample.data.model.FeedResponse
+import com.poetofcode.site2api_sample.data.model.ResultResponse
 import com.poetofcode.site2api_sample.data.repository.FeedRepository
 import com.poetofcode.site2api_sample.data.service.ServiceProvider
 import retrofit2.Call
@@ -19,15 +23,21 @@ class MainViewModel : ViewModel() {
     }
 
     fun loadFeed() {
-        feedRepository.fetchFeed().enqueue(object : Callback<FeedResponse> {
-            override fun onResponse(call: Call<FeedResponse>, response: Response<FeedResponse>) {
-                println("mylog Is success: ${response.isSuccessful}")
-            }
+        feedRepository.fetchFeed().onResult { result ->
+            println("mylog 1111")
 
-            override fun onFailure(call: Call<FeedResponse>, t: Throwable) {
-                println("mylog Failure: ${t}")
+            when (result) {
+                is ExceptionResponse -> {
+                    println("mylog Exception ${result}")
+                }
+                is FailureResponse -> {
+                    println("mylog Failure ${result}")
+                }
+                is DataResponse -> {
+                    println("mylog Success ${result.result}")
+                }
             }
-        })
+        }
     }
 
 }
