@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -21,27 +22,30 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // setContentView(R.layout.activity_main)
 
         setContent {
             Site2apisampleTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    ScreenContent()
                 }
             }
         }
-
-
-//        val baseUrl = resources.getString(R.string.backendBaseUrl)
-//        val apiKey = resources.getString(R.string.apiKey)
-//        vm.initAPI(baseUrl, apiKey)
-//        vm.loadFeed()
     }
 
+    @Composable
+    private fun ScreenContent() {
+        LaunchedEffect(Unit) {
+            val baseUrl = resources.getString(R.string.backendBaseUrl)
+            val apiKey = resources.getString(R.string.apiKey)
+            vm.initAPI(baseUrl, apiKey)
+            vm.loadFeed()
+        }
+
+
+    }
 
     @Composable
     fun Greeting(name: String, modifier: Modifier = Modifier) {
