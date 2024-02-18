@@ -24,8 +24,6 @@ class MainViewModel : ViewModel() {
 
     fun loadFeed() {
         feedRepository.fetchFeed().onResult { result ->
-            println("mylog 1111")
-
             when (result) {
                 is ExceptionResponse -> {
                     println("mylog Exception ${result}")
