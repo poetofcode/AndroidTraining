@@ -18,12 +18,14 @@ import retrofit2.Response
 
 data class FeedScreenState(
     val posts: List<FeedResponse.Post>,
-    val isError: Boolean
+    val isError: Boolean,
+    val isLoading: Boolean
 ) {
     companion object {
         val INITIAL = FeedScreenState(
             posts = emptyList(),
-            isError = false
+            isError = false,
+            isLoading = false
         )
     }
 }
@@ -42,7 +44,14 @@ class MainViewModel : ViewModel() {
     }
 
     fun loadFeed() {
+        _screenState.value = _screenState.value.copy(
+            isLoading = true
+        )
         feedRepository.fetchFeed().onResult { result ->
+            _screenState.value = _screenState.value.copy(
+                isLoading = false
+            )
+
             when (result) {
                 is ExceptionResponse -> {
                     _screenState.value = _screenState.value.copy(
